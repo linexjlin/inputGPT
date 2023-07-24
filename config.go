@@ -36,3 +36,10 @@ func pressPaste() {
 func getOpenAIkey() string {
 	return os.Getenv("OPENAI_API_KEY")
 }
+
+func getOpenAIBaseUrl() string {
+	if os.Getenv("OPENAI_API_BASE_URL") != "" {
+		return os.Getenv("OPENAI_API_BASE_URL")
+	}
+	return "https://api.openai.com/v1"
+}

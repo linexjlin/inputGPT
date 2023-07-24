@@ -8,7 +8,9 @@ import (
 )
 
 func queryGTP(txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
-	client := gpt.NewClient(getOpenAIkey())
+	var opt = gpt.WithBaseURL(getOpenAIBaseUrl())
+	client := gpt.NewClient(getOpenAIkey(), opt)
+
 	err := client.ChatCompletionStream(context.Background(), &gpt.ChatCompletionRequest{
 		Model:    "gpt-3.5-turbo-0613",
 		Messages: messages,
