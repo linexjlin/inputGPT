@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
+	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
 
 	hook "github.com/robotn/gohook"
@@ -55,26 +56,12 @@ func registerHotKeys() {
 		messages = append(messages, headMessages...)
 		go queryGTP(txtChan, append(messages, histMessages[msgIdx:]...))
 
-		tmpTxt := ""
 		assistantAns := ""
-		lastPaste := time.Now()
 		for txt := range txtChan {
-			tmpTxt += txt
+			robotgo.TypeStr(txt)
+			fmt.Print(txt)
 			assistantAns += txt
-			if time.Now().Sub(lastPaste).Seconds() > 1 && tmpTxt != "" {
-				clipboard.WriteAll(tmpTxt)
-				time.Sleep(time.Millisecond * 200)
-				pressPaste()
-				lastPaste = time.Now()
-				tmpTxt = ""
-			}
 		}
-		if tmpTxt != "" {
-			clipboard.WriteAll(tmpTxt)
-			time.Sleep(time.Millisecond * 200)
-			pressPaste()
-		}
-		fmt.Println(assistantAns)
 		histMessages = append(histMessages, gpt.ChatCompletionRequestMessage{
 			Role:    "assistant",
 			Content: assistantAns,
