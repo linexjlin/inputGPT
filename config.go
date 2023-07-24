@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 
 	"github.com/go-vgo/robotgo"
@@ -42,4 +44,16 @@ func getOpenAIBaseUrl() string {
 		return os.Getenv("OPENAI_API_BASE_URL")
 	}
 	return "https://api.openai.com/v1"
+}
+
+func getMaxContext() int {
+	maxContext := os.Getenv("MAX_CONTEXT")
+	maxContextInt, err := strconv.Atoi(maxContext)
+	if err != nil {
+		fmt.Println("MAX_CONTEXT不是一个有效的数字")
+		return 4
+	} else {
+		return maxContextInt
+	}
+	return 4
 }

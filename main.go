@@ -12,7 +12,7 @@ import (
 )
 
 func registerHotKeys() {
-	maxConext := 4
+	maxConext := getMaxContext()
 	gptHotkeys := getGPTHotkeys()
 	lastHit := time.Now()
 	fmt.Printf("--- Please press %s to auto generate text --- \n", gptHotkeys)
