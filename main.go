@@ -27,7 +27,6 @@ func registerHotKeys() {
 
 	hook.Register(hook.KeyDown, gptHotkeys, func(e hook.Event) {
 		fmt.Println(gptHotkeys)
-
 		if time.Now().Sub(lastHit).Seconds() > 1.0 {
 			lastHit = time.Now()
 		} else {
@@ -38,10 +37,8 @@ func registerHotKeys() {
 		if err != nil {
 			fmt.Println("Failed to read clipboard content:", err)
 		}
-		fmt.Println("Clipboard content:", clipboardContent)
-		//robotgo.TypeStr("Hello World")
-		//robotgo.KeyTap("enter")
-		//robotgo.KeyTap("v", "control")
+		fmt.Println("### user:")
+		fmt.Println(clipboardContent)
 		messages := []gpt.ChatCompletionRequestMessage{}
 
 		histMessages = append(histMessages, gpt.ChatCompletionRequestMessage{
@@ -57,11 +54,13 @@ func registerHotKeys() {
 		go queryGTP(txtChan, append(messages, histMessages[msgIdx:]...))
 
 		assistantAns := ""
+		fmt.Print("### Assistant:\n")
 		for txt := range txtChan {
 			robotgo.TypeStr(txt)
 			fmt.Print(txt)
 			assistantAns += txt
 		}
+		fmt.Print("\n")
 		histMessages = append(histMessages, gpt.ChatCompletionRequestMessage{
 			Role:    "assistant",
 			Content: assistantAns,
