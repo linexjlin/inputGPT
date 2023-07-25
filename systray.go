@@ -34,6 +34,7 @@ func onExit() {
 	fmt.Println("exit", now)
 }
 
+// TODO: Set context cnt in clear context menu
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 	mQuitOrig := systray.AddMenuItem("Exit", "Quit the whole app")
@@ -46,12 +47,13 @@ func onReady() {
 
 	systray.AddSeparator()
 
-	mClearContext := systray.AddMenuItem("ClearContext", "Clear Context")
+	mClearContext := systray.AddMenuItem("Clear Context", "Clear Context")
 	go func() {
 		for {
 			select {
 			case <-mClearContext.ClickedCh:
-				fmt.Println("ClearContext")
+				fmt.Println("Clear Context")
+				g_userSetting.histMessages = g_userSetting.histMessages[:0]
 			}
 		}
 	}()
@@ -70,15 +72,35 @@ func onReady() {
 	for i, msk := range masks {
 		fmt.Println(i)
 		m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", msk), "Check Me", false)
+		filepath := fmt.Sprintf("prompts/%s.json", msk)
+		mk := msk
 		if i == len(masks)-1 {
 			m.Check()
+			filepath = ""
 		}
 		var idx = i
 		go func() {
 			for {
 				select {
 				case <-m.ClickedCh:
-					fmt.Println(idx)
+					fmt.Println(idx, filepath, mk)
+					if filepath == "" {
+						initUserSetting()
+					} else {
+						if p, e := loadPrompt(filepath); e != nil {
+							fmt.Println(e)
+							continue
+						} else {
+							g_userSetting.headMessages = p.HeadMessages
+							g_userSetting.model = p.Model
+							if p.MaxContext != 0 {
+								g_userSetting.maxConext = p.MaxContext
+							} else {
+								g_userSetting.maxConext = getMaxContext()
+							}
+						}
+					}
+
 					for ii, mm := range maskMenus {
 						if ii == idx {
 							mm.Check()
@@ -86,6 +108,7 @@ func onReady() {
 							mm.Uncheck()
 						}
 					}
+
 				}
 			}
 		}()

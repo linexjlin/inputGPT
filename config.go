@@ -1,13 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"runtime"
 	"strconv"
 	"strings"
 
 	"github.com/go-vgo/robotgo"
+	"github.com/hanyuancheung/gpt-go"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -56,4 +59,28 @@ func getMaxContext() int {
 		return maxContextInt
 	}
 	return 4
+}
+
+type Prompt struct {
+	Model        string                             `json:"model"`
+	HeadMessages []gpt.ChatCompletionRequestMessage `json:"headMessages"`
+	MaxContext   int                                `json:"maxContext"`
+}
+
+func loadPrompt(filepath string) (Prompt, error) {
+	var prompt Prompt
+
+	// Read the file contents
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return prompt, err
+	}
+
+	// Unmarshal the JSON data into the Prompt struct
+	err = json.Unmarshal(data, &prompt)
+	if err != nil {
+		return prompt, err
+	}
+
+	return prompt, nil
 }
