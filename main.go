@@ -36,15 +36,7 @@ func registerHotKeys() {
 	gptHotkeys := getGPTHotkeys()
 	lastHit := time.Now()
 	fmt.Printf("--- Please press %s to auto generate text --- \n", gptHotkeys)
-	/*
-		headMessages := []gpt.ChatCompletionRequestMessage{
-			{
-				Role:    "system",
-				Content: "You are a helpful assistant!",
-			},
-		}*/
 	initUserSetting()
-	//histMessages := []gpt.ChatCompletionRequestMessage{}
 
 	hook.Register(hook.KeyDown, gptHotkeys, func(e hook.Event) {
 		fmt.Println(gptHotkeys)

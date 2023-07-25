@@ -91,12 +91,11 @@ func onReady() {
 							fmt.Println(e)
 							continue
 						} else {
+							initUserSetting() //reset all user settings
 							g_userSetting.headMessages = p.HeadMessages
 							g_userSetting.model = p.Model
 							if p.MaxContext != 0 {
 								g_userSetting.maxConext = p.MaxContext
-							} else {
-								g_userSetting.maxConext = getMaxContext()
 							}
 						}
 					}
