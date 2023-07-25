@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
+	"github.com/getlantern/systray"
 	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
 
@@ -72,5 +73,6 @@ func registerHotKeys() {
 }
 
 func main() {
-	registerHotKeys()
+	go registerHotKeys()
+	systray.Run(onReady, onExit)
 }
