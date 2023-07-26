@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/getlantern/systray"
@@ -34,6 +35,14 @@ func onExit() {
 	fmt.Println("exit", now)
 }
 
+var _mClearContextSetTitle func(string)
+
+func updateClearContextTitle(n int) {
+	_mClearContextSetTitle(fmt.Sprintf("Clear Context %d/%d", n, g_userSetting.maxConext))
+}
+
+var updateHotKeyTitle func(string)
+
 // TODO: Set context cnt in clear context menu
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
@@ -45,15 +54,20 @@ func onReady() {
 		fmt.Println("Finished quitting")
 	}()
 
+	mHotKey := systray.AddMenuItem("", "Click to active GPT")
+	updateHotKeyTitle = mHotKey.SetTitle
+
 	systray.AddSeparator()
 
 	mClearContext := systray.AddMenuItem("Clear Context", "Clear Context")
+	_mClearContextSetTitle = mClearContext.SetTitle
 	go func() {
 		for {
 			select {
 			case <-mClearContext.ClickedCh:
 				fmt.Println("Clear Context")
 				g_userSetting.histMessages = g_userSetting.histMessages[:0]
+				updateClearContextTitle(0)
 			}
 		}
 	}()
@@ -97,6 +111,8 @@ func onReady() {
 							if p.MaxContext != 0 {
 								g_userSetting.maxConext = p.MaxContext
 							}
+							updateClearContextTitle(0)
+							g_userSetting.mask = mk
 						}
 					}
 
@@ -113,4 +129,6 @@ func onReady() {
 		}()
 		maskMenus = append(maskMenus, m)
 	}
+	updateClearContextTitle(0)
+	updateHotKeyTitle(fmt.Sprintf("Copy the question then click \"%s\" to query GPT", strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
 }

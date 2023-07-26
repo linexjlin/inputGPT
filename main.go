@@ -13,6 +13,7 @@ import (
 )
 
 type UserSetting struct {
+	mask         string
 	model        string
 	maxConext    int
 	headMessages []gpt.ChatCompletionRequestMessage
@@ -22,12 +23,13 @@ type UserSetting struct {
 var g_userSetting UserSetting
 
 func initUserSetting() {
+	g_userSetting.mask = "Default"
 	g_userSetting.model = "gpt-3.5-turbo-0613"
 	g_userSetting.maxConext = getMaxContext()
 	g_userSetting.headMessages = []gpt.ChatCompletionRequestMessage{
 		{
 			Role:    "system",
-			Content: "You are a helpful assistant!",
+			Content: "Just complete the text I give you,do not explain",
 		},
 	}
 }
@@ -50,6 +52,7 @@ func registerHotKeys() {
 		if err != nil {
 			fmt.Println("Failed to read clipboard content:", err)
 		}
+		fmt.Println("### prompt:", g_userSetting.mask)
 		fmt.Println("### user:")
 		fmt.Println(clipboardContent)
 		messages := []gpt.ChatCompletionRequestMessage{}
@@ -78,6 +81,7 @@ func registerHotKeys() {
 			Role:    "assistant",
 			Content: assistantAns,
 		})
+		updateClearContextTitle(len(g_userSetting.histMessages))
 	})
 
 	s := hook.Start()

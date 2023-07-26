@@ -18,11 +18,11 @@ func getGPTHotkeys() []string {
 	hotkeys := os.Getenv("GPT_HOTKEYS")
 	if hotkeys == "" {
 		if runtime.GOOS == "windows" {
-			hotkeys = "q+ctrl+shift"
+			hotkeys = "`+win"
 		} else if runtime.GOOS == "darwin" {
-			hotkeys = "z+shift+command"
+			hotkeys = "`+command"
 		} else {
-			hotkeys = "z+ctrl+alt"
+			hotkeys = "`+win"
 		}
 	}
 	return strings.Split(hotkeys, "+")
