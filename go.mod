@@ -4,8 +4,11 @@ go 1.18
 
 require (
 	github.com/atotto/clipboard v0.1.4
+	github.com/getlantern/systray v1.2.2
 	github.com/go-vgo/robotgo v0.100.10
 	github.com/hanyuancheung/gpt-go v0.1.0
+	github.com/joho/godotenv v1.5.1
+	github.com/linexjlin/systray-icons v0.0.0-20230726055530-987a2b6fb143
 	github.com/robotn/gohook v0.31.3
 )
 
@@ -17,10 +20,8 @@ require (
 	github.com/getlantern/hex v0.0.0-20190417191902-c6586a6fe0b7 // indirect
 	github.com/getlantern/hidden v0.0.0-20190325191715-f02dbb02be55 // indirect
 	github.com/getlantern/ops v0.0.0-20190325191751-d70cb0d6f85f // indirect
-	github.com/getlantern/systray v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
@@ -34,6 +35,6 @@ require (
 	github.com/vcaesar/keycode v0.10.0 // indirect
 	github.com/vcaesar/tt v0.20.0 // indirect
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
-	golang.org/x/net v0.0.0-20211029224645-99673261e6eb // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/sys v0.10.0 // indirect
 )

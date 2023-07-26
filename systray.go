@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/getlantern/systray"
-	"github.com/getlantern/systray/example/icon"
+	icon "github.com/linexjlin/systray-icons/text-style"
 )
 
 func getMasks() (masks []string) {
