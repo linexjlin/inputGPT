@@ -1,15 +1,18 @@
 # InputGPT 
-A program let you query GPT from any input area
+A program let you query GPT from any input area. 
+
+# Usage 
+1. Copy the text to clipboard
+1. click win + ` to query GPT 
 
 
-# make syso
+# Build 
+windows 
 ```
-go get github.com/akavel/rsrc
-go install github.com/akavel/rsrc
+build_win.bat
 ```
 
 
----
 # Credit
 
 https://github.com/getlantern/systray
