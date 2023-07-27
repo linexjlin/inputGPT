@@ -28,6 +28,8 @@ Create a json file like below the add it to the prompts folder
 ``` 
 
 # DEMO
+![](https://ipfs.ee/ipfs/Qmb2zoiQr6wRTdc4SqogFH5vyppgqmWzq87rtCmxc4b8w9/0b97fdbd-0d17-4cd5-a684-1e1a79a0a177.png)
+
 <video width="320" height="240" controls>
   <source src="https://ipfs.ee/ipfs/QmemYrja3teXbsDMErMLqL3vUMVGbVnaBNiLHbGDGZJCvJ/edeaf379-b22a-4d6f-a771-655e3b8a10b6.mp4" type="video/mp4">
 </video>
