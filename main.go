@@ -8,8 +8,6 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
-	"github.com/lxn/win"
-
 	hook "github.com/robotn/gohook"
 )
 
@@ -72,7 +70,7 @@ func registerHotKeys() {
 		if len(g_userSetting.histMessages)-g_userSetting.maxConext > 0 {
 			msgIdx = len(g_userSetting.histMessages) - g_userSetting.maxConext
 		}
-		var txtChan = make(chan string, 100)
+		txtChan := make(chan string, 100)
 		messages = append(messages, g_userSetting.headMessages...)
 		go queryGTP(txtChan, append(messages, g_userSetting.histMessages[msgIdx:]...))
 
@@ -96,9 +94,7 @@ func registerHotKeys() {
 }
 
 func main() {
-	if !isDebug() {
-		win.ShowWindow(win.GetConsoleWindow(), win.SW_HIDE)
-	}
+	OSDepCheck()
 	go registerHotKeys()
 	systray.Run(onReady, onExit)
 }
