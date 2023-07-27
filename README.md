@@ -28,7 +28,7 @@ Create a json file like below the add it to the prompts folder
 ``` 
 
 # DEMO
-![](https://ipfs.ee/ipfs/Qmb2zoiQr6wRTdc4SqogFH5vyppgqmWzq87rtCmxc4b8w9/0b97fdbd-0d17-4cd5-a684-1e1a79a0a177.png)
+![](https://ipfs.ee/ipfs/QmNcQVdbLMm9WwjyHce4vvPL1mQhi1VJdAkc1B6sy69GdJ/9aee063e-5898-4429-81e0-ef7ba20521d3.png)
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/2EpdfYILbgQ/0.jpg)](https://www.youtube.com/watch?v=2EpdfYILbgQ "InputGTP DEMO")
 

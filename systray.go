@@ -83,7 +83,6 @@ func onReady() {
 	masks = append(masks, "Default")
 
 	for i, msk := range masks {
-		fmt.Println(i)
 		m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", msk), "Check Me", false)
 		filepath := fmt.Sprintf("prompts/%s.json", msk)
 		mk := msk
