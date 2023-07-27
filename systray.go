@@ -43,7 +43,6 @@ func updateClearContextTitle(n int) {
 
 var updateHotKeyTitle func(string)
 
-// TODO: Set context cnt in clear context menu
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 	mQuitOrig := systray.AddMenuItem("Exit", "Quit the whole app")
@@ -107,7 +106,10 @@ func onReady() {
 						} else {
 							initUserSetting() //reset all user settings
 							g_userSetting.headMessages = p.HeadMessages
-							g_userSetting.model = p.Model
+							if p.Model != "" {
+								g_userSetting.model = p.Model
+							}
+
 							if p.MaxContext != 0 {
 								g_userSetting.maxConext = p.MaxContext
 							}

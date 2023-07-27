@@ -2,8 +2,6 @@ github.com/BurntSushi/freetype-go v0.0.0-20160129220410-b763ddbfe298/go.mod h1:D
 github.com/BurntSushi/graphics-go v0.0.0-20160129215708-b43f31a4a966/go.mod h1:Mid70uvE93zn9wgF92A/r5ixgnvX8Lh68fxp9KQBaI0=
 github.com/StackExchange/wmi v1.2.1 h1:VIkavFPXSjcnS+O8yTq7NI32k0R5Aj+v39y29VYDOSA=
 github.com/StackExchange/wmi v1.2.1/go.mod h1:rcmrprowKIVzvc+NUiLncP2uuArMWLCbu9SBzvHz7e8=
-github.com/akavel/rsrc v0.10.2 h1:Zxm8V5eI1hW4gGaYsJQUhxpjkENuG91ki8B4zCrvEsw=
-github.com/akavel/rsrc v0.10.2/go.mod h1:uLoCtb9J+EyAqh+26kdrTgmzRBFPGOolLWKpdxkKq+c=
 github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z4=
 github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -33,10 +31,10 @@ github.com/hanyuancheung/gpt-go v0.1.0 h1:O27d2rcVU03u3hiLWNaOoe6UbpUFujHSVTvqyr
 github.com/hanyuancheung/gpt-go v0.1.0/go.mod h1:aLG8FXFCbY6BLOGJnjMboGftARjZG1iVfcQVyopHTqA=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
-github.com/linexjlin/systray-icons v0.0.0-20230726055530-987a2b6fb143 h1:z7341YxdpXtKNd55G6mm8JZ7TsP4VbNtxx86ddtJ/Z8=
-github.com/linexjlin/systray-icons v0.0.0-20230726055530-987a2b6fb143/go.mod h1:205ZG9XgCnr3bg4kRrX1p9oKCSqPsOAHPkN6R2MqLJA=
 github.com/linexjlin/systray-icons v0.0.0-20230726061515-4a32bffc9133 h1:OYo8CEkQcrYgMt1beRAP68crUu+ur3pw1vBdqht1j6o=
 github.com/linexjlin/systray-icons v0.0.0-20230726061515-4a32bffc9133/go.mod h1:205ZG9XgCnr3bg4kRrX1p9oKCSqPsOAHPkN6R2MqLJA=
+github.com/linexjlin/systray-icons v0.0.0-20230727135833-057b4185c255 h1:lujUJMBPuC57eT3qbXOuSRZm8kmwp41jkOzWlFmUTb8=
+github.com/linexjlin/systray-icons v0.0.0-20230727135833-057b4185c255/go.mod h1:205ZG9XgCnr3bg4kRrX1p9oKCSqPsOAHPkN6R2MqLJA=
 github.com/lxn/walk v0.0.0-20210112085537-c389da54e794/go.mod h1:E23UucZGqpuUANJooIbHWCufXvOcT6E7Stq81gU+CSQ=
 github.com/lxn/win v0.0.0-20210218163916-a377121e959e h1:H+t6A/QJMbhCSEH5rAuRxh+CtW96g0Or0Fxa9IKr4uc=
 github.com/lxn/win v0.0.0-20210218163916-a377121e959e/go.mod h1:KxxjdtRkfNoYDCUP5ryK7XJJNTnpC8atvtmTheChOtk=

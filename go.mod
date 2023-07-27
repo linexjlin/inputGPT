@@ -8,13 +8,13 @@ require (
 	github.com/go-vgo/robotgo v0.100.10
 	github.com/hanyuancheung/gpt-go v0.1.0
 	github.com/joho/godotenv v1.5.1
-	github.com/linexjlin/systray-icons v0.0.0-20230726061515-4a32bffc9133
+	github.com/linexjlin/systray-icons v0.0.0-20230727135833-057b4185c255
+	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/robotn/gohook v0.31.3
 )
 
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
-	github.com/akavel/rsrc v0.10.2 // indirect
 	github.com/getlantern/context v0.0.0-20190109183933-c447772a6520 // indirect
 	github.com/getlantern/errors v0.0.0-20190325191628-abdb3e3e36f7 // indirect
 	github.com/getlantern/golog v0.0.0-20190830074920-4ef2e798c2d7 // indirect
@@ -23,7 +23,6 @@ require (
 	github.com/getlantern/ops v0.0.0-20190325191751-d70cb0d6f85f // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
 	github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934 // indirect

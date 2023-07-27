@@ -14,15 +14,19 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
+func isDebug() bool {
+	return os.Getenv("DEBUG") != ""
+}
+
 func getGPTHotkeys() []string {
 	hotkeys := os.Getenv("GPT_HOTKEYS")
 	if hotkeys == "" {
 		if runtime.GOOS == "windows" {
-			hotkeys = "`+win"
+			hotkeys = "space+shift"
 		} else if runtime.GOOS == "darwin" {
-			hotkeys = "`+command"
+			hotkeys = "space+shift"
 		} else {
-			hotkeys = "`+win"
+			hotkeys = "space+shift"
 		}
 	}
 	return strings.Split(hotkeys, "+")

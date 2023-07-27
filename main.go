@@ -8,6 +8,7 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
+	"github.com/lxn/win"
 
 	hook "github.com/robotn/gohook"
 )
@@ -51,6 +52,12 @@ func registerHotKeys() {
 		clipboardContent, err := clipboard.ReadAll()
 		if err != nil {
 			fmt.Println("Failed to read clipboard content:", err)
+			return
+		}
+
+		if len(clipboardContent) < 1 {
+			fmt.Println("Empty question")
+			return
 		}
 		fmt.Println("### prompt:", g_userSetting.mask)
 		fmt.Println("### user:")
@@ -89,6 +96,9 @@ func registerHotKeys() {
 }
 
 func main() {
+	if !isDebug() {
+		win.ShowWindow(win.GetConsoleWindow(), win.SW_HIDE)
+	}
 	go registerHotKeys()
 	systray.Run(onReady, onExit)
 }

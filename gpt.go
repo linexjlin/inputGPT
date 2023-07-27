@@ -12,7 +12,7 @@ func queryGTP(txtChan chan string, messages []gpt.ChatCompletionRequestMessage) 
 	client := gpt.NewClient(getOpenAIkey(), opt)
 
 	err := client.ChatCompletionStream(context.Background(), &gpt.ChatCompletionRequest{
-		Model:    "gpt-3.5-turbo-0613",
+		Model:    g_userSetting.model,
 		Messages: messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {
 		if response.Choices[0].Delta.Content != "" {
