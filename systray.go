@@ -67,6 +67,14 @@ func onReady() {
 
 	systray.AddSeparator()
 
+	mManager := systray.AddMenuItem(UText("Manager Prompts"), UText("Manager the prompts"))
+	go func() {
+		for {
+			<-mManager.ClickedCh
+			open.Start("prompts")
+		}
+	}()
+
 	mImport := systray.AddMenuItem(UText("Import"), UText("Import"))
 
 	mClearContext := systray.AddMenuItem(UText("Clear Context"), UText("Clear Context"))

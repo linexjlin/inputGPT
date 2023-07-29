@@ -50,6 +50,12 @@ var languages = map[string]map[string]string{
 	"Import": {
 		"zh": "导入",
 	},
+	"Manager Prompts": {
+		"zh": "管理引导词",
+	},
+	"Manager the prompts": {
+		"zh": "打开文件夹，管理引导词",
+	},
 }
 
 var LANG = "en"
