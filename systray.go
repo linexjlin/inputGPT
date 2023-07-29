@@ -91,13 +91,13 @@ func onReady() {
 	}()
 
 	systray.SetTemplateIcon(icon.Data, icon.Data)
-	systray.SetTitle(UText("InputGPT"))
+	//	systray.SetTitle(UText("InputGPT"))
 	systray.SetTooltip(UText("InputGPT a Helpful input Assistant"))
 
 	systray.AddSeparator()
 
 	var maskMenus []*systray.MenuItem
-	var masks = getMasks()
+	masks := getMasks()
 
 	masks = append(masks, UText("Default"))
 	maskCnt := 0
@@ -110,7 +110,7 @@ func onReady() {
 			m.Check()
 			filepath = ""
 		}
-		var idx = i
+		idx := i
 		maskCnt = i
 		go func() {
 			for {
@@ -124,7 +124,7 @@ func onReady() {
 							fmt.Println(e)
 							continue
 						} else {
-							initUserSetting() //reset all user settings
+							initUserSetting() // reset all user settings
 							g_userSetting.headMessages = p.HeadMessages
 							if p.Model != "" {
 								g_userSetting.model = p.Model
@@ -145,7 +145,6 @@ func onReady() {
 							mm.Uncheck()
 						}
 					}
-
 				}
 			}
 		}()
@@ -174,7 +173,7 @@ func onReady() {
 								go func() {
 									for {
 										<-m.ClickedCh
-										initUserSetting() //reset all user settings
+										initUserSetting() // reset all user settings
 										g_userSetting.headMessages = p.HeadMessages
 										if p.Model != "" {
 											g_userSetting.model = p.Model
