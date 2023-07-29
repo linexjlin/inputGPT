@@ -94,6 +94,7 @@ func registerHotKeys() {
 }
 
 func main() {
+	setLang()
 	OSDepCheck()
 	go registerHotKeys()
 	systray.Run(onReady, onExit)

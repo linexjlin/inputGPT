@@ -8,6 +8,7 @@ import (
 
 	"github.com/getlantern/systray"
 	icon "github.com/linexjlin/systray-icons/enter-the-keyboard"
+	"github.com/skratchdot/open-golang/open"
 )
 
 func getMasks() (masks []string) {
@@ -38,14 +39,19 @@ func onExit() {
 var _mClearContextSetTitle func(string)
 
 func updateClearContextTitle(n int) {
-	_mClearContextSetTitle(fmt.Sprintf("Clear Context %d/%d", n, g_userSetting.maxConext))
+	_mClearContextSetTitle(fmt.Sprintf(UText("Clear Context %d/%d"), n, g_userSetting.maxConext))
 }
 
 var updateHotKeyTitle func(string)
 
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
-	mQuitOrig := systray.AddMenuItem("Exit", "Quit the whole app")
+	mAbout := systray.AddMenuItem(UText("About"), UText("About the App"))
+	go func() {
+		<-mAbout.ClickedCh
+		open.Start("https://github.com/linexjlin/inputGPT")
+	}()
+	mQuitOrig := systray.AddMenuItem(UText("Exit"), UText("Quit the whole app"))
 	go func() {
 		<-mQuitOrig.ClickedCh
 		fmt.Println("Requesting quit")
@@ -53,12 +59,12 @@ func onReady() {
 		fmt.Println("Finished quitting")
 	}()
 
-	mHotKey := systray.AddMenuItem("", "Click to active GPT")
+	mHotKey := systray.AddMenuItem("", UText("Click to active GPT"))
 	updateHotKeyTitle = mHotKey.SetTitle
 
 	systray.AddSeparator()
 
-	mClearContext := systray.AddMenuItem("Clear Context", "Clear Context")
+	mClearContext := systray.AddMenuItem(UText("Clear Context"), UText("Clear Context"))
 	_mClearContextSetTitle = mClearContext.SetTitle
 	go func() {
 		for {
@@ -72,15 +78,15 @@ func onReady() {
 	}()
 
 	systray.SetTemplateIcon(icon.Data, icon.Data)
-	systray.SetTitle("InputGPT")
-	systray.SetTooltip("InputGPT a Helpful input Assistant")
+	systray.SetTitle(UText("InputGPT"))
+	systray.SetTooltip(UText("InputGPT a Helpful input Assistant"))
 
 	systray.AddSeparator()
 
 	var maskMenus []*systray.MenuItem
 	var masks = getMasks()
 
-	masks = append(masks, "Default")
+	masks = append(masks, UText("Default"))
 
 	for i, msk := range masks {
 		m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", msk), "Check Me", false)
@@ -131,5 +137,5 @@ func onReady() {
 		maskMenus = append(maskMenus, m)
 	}
 	updateClearContextTitle(0)
-	updateHotKeyTitle(fmt.Sprintf("Copy the question then click \"%s\" to query GPT", strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
+	updateHotKeyTitle(fmt.Sprintf(UText("Copy the question then click \"%s\" to query GPT"), strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
 }
