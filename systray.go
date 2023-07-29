@@ -83,7 +83,7 @@ func onReady() {
 		}
 	}()
 
-	mImport := systray.AddMenuItem(UText("Import"), UText("Import"))
+	mImport := systray.AddMenuItem(UText("Import"), UText("Import a prompt from clipboard"))
 
 	mClearContext := systray.AddMenuItem(UText("Clear Context"), UText("Clear Context"))
 	_mClearContextSetTitle = mClearContext.SetTitle
@@ -111,7 +111,7 @@ func onReady() {
 	maskCnt := 0
 
 	for i, msk := range masks {
-		m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", msk), "Check Me", false)
+		m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", msk), UText("Select this prompt"), false)
 		filepath := fmt.Sprintf("prompts/%s.json", msk)
 		mk := msk
 		if i == len(masks)-1 {
