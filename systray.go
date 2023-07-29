@@ -47,6 +47,15 @@ var updateHotKeyTitle func(string)
 
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
+
+	mQuitOrig := systray.AddMenuItem(UText("Exit"), UText("Quit the whole app"))
+	go func() {
+		<-mQuitOrig.ClickedCh
+		fmt.Println("Requesting quit")
+		systray.Quit()
+		fmt.Println("Finished quitting")
+	}()
+
 	mAbout := systray.AddMenuItem(UText("About"), UText("Open the project page"))
 	go func() {
 		for {
@@ -62,20 +71,13 @@ func onReady() {
 			open.Start("env.txt")
 		}
 	}()
-	mQuitOrig := systray.AddMenuItem(UText("Exit"), UText("Quit the whole app"))
-	go func() {
-		<-mQuitOrig.ClickedCh
-		fmt.Println("Requesting quit")
-		systray.Quit()
-		fmt.Println("Finished quitting")
-	}()
 
 	mHotKey := systray.AddMenuItem("", UText("Click to active GPT"))
 	updateHotKeyTitle = mHotKey.SetTitle
 
 	systray.AddSeparator()
 
-	mManager := systray.AddMenuItem(UText("Manager Prompts"), UText("Modify, Delete prompts"))
+	mManager := systray.AddMenuItem(UText("Manage Prompts"), UText("Modify, Delete prompts"))
 	go func() {
 		for {
 			<-mManager.ClickedCh
