@@ -8,6 +8,7 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
+	"github.com/joho/godotenv"
 	hook "github.com/robotn/gohook"
 )
 
@@ -94,6 +95,7 @@ func registerHotKeys() {
 }
 
 func main() {
+	godotenv.Load("env.txt")
 	setLang()
 	OSDepCheck()
 	go registerHotKeys()

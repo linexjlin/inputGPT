@@ -11,7 +11,6 @@ import (
 
 	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
-	_ "github.com/joho/godotenv/autoload"
 )
 
 func isDebug() bool {
