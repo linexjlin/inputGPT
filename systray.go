@@ -47,11 +47,19 @@ var updateHotKeyTitle func(string)
 
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
-	mAbout := systray.AddMenuItem(UText("About"), UText("About the App"))
+	mAbout := systray.AddMenuItem(UText("About"), UText("Open the project page"))
 	go func() {
 		for {
 			<-mAbout.ClickedCh
 			open.Start("https://github.com/linexjlin/inputGPT")
+		}
+	}()
+
+	mSetKey := systray.AddMenuItem(UText("Set API KEY"), UText("Set the OpenAI KEY, baseurl etc.."))
+	go func() {
+		for {
+			<-mSetKey.ClickedCh
+			open.Start("env.txt")
 		}
 	}()
 	mQuitOrig := systray.AddMenuItem(UText("Exit"), UText("Quit the whole app"))
@@ -67,7 +75,7 @@ func onReady() {
 
 	systray.AddSeparator()
 
-	mManager := systray.AddMenuItem(UText("Manager Prompts"), UText("Manager the prompts"))
+	mManager := systray.AddMenuItem(UText("Manager Prompts"), UText("Modify, Delete prompts"))
 	go func() {
 		for {
 			<-mManager.ClickedCh
