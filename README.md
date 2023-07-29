@@ -55,23 +55,6 @@ then click then import menu of the app．
 
 [For more templates](./prompts)
 
-
-## Add new new prompts 
-The default mode is continue writing with the given text. 
-Create a json file like below the add it to the prompts folder
-```json
-{
-    "model": "gpt-3.5-turbo-0613",
-    "headMessages": [
-      {
-        "role": "system",
-        "content": "Translate all the messages I give you into English"
-      }
-    ],
-    "maxContext": 1
-  }
-``` 
-
 # DEMO
 ![](https://ipfs.ee/ipfs/QmNcQVdbLMm9WwjyHce4vvPL1mQhi1VJdAkc1B6sy69GdJ/9aee063e-5898-4429-81e0-ef7ba20521d3.png)
 
