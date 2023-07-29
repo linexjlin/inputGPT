@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/atotto/clipboard"
 	"github.com/getlantern/systray"
 	icon "github.com/linexjlin/systray-icons/enter-the-keyboard"
 	"github.com/skratchdot/open-golang/open"
@@ -48,8 +49,10 @@ func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 	mAbout := systray.AddMenuItem(UText("About"), UText("About the App"))
 	go func() {
-		<-mAbout.ClickedCh
-		open.Start("https://github.com/linexjlin/inputGPT")
+		for {
+			<-mAbout.ClickedCh
+			open.Start("https://github.com/linexjlin/inputGPT")
+		}
 	}()
 	mQuitOrig := systray.AddMenuItem(UText("Exit"), UText("Quit the whole app"))
 	go func() {
@@ -63,6 +66,8 @@ func onReady() {
 	updateHotKeyTitle = mHotKey.SetTitle
 
 	systray.AddSeparator()
+
+	mImport := systray.AddMenuItem(UText("Import"), UText("Import"))
 
 	mClearContext := systray.AddMenuItem(UText("Clear Context"), UText("Clear Context"))
 	_mClearContextSetTitle = mClearContext.SetTitle
@@ -87,6 +92,7 @@ func onReady() {
 	var masks = getMasks()
 
 	masks = append(masks, UText("Default"))
+	maskCnt := 0
 
 	for i, msk := range masks {
 		m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", msk), "Check Me", false)
@@ -97,6 +103,7 @@ func onReady() {
 			filepath = ""
 		}
 		var idx = i
+		maskCnt = i
 		go func() {
 			for {
 				select {
@@ -136,6 +143,59 @@ func onReady() {
 		}()
 		maskMenus = append(maskMenus, m)
 	}
+
+	// Handling import events
+	go func() {
+		for {
+			select {
+			case <-mImport.ClickedCh:
+				fmt.Println(UText("Import"))
+				clipboardContent, err := clipboard.ReadAll()
+				if err != nil {
+					fmt.Println("Failed to read clipboard content:", err)
+				} else {
+					fmt.Println(clipboardContent)
+					if p, e := parsePrompt(clipboardContent); e != nil {
+						fmt.Println(e)
+					} else {
+						if p.Name != "" {
+							if e = savePrompt(p, fmt.Sprintf("prompts/%s.json", p.Name)); e == nil {
+								m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", p.Name), "Check Me", false)
+								maskCnt++
+								idx := maskCnt
+								go func() {
+									for {
+										<-m.ClickedCh
+										initUserSetting() //reset all user settings
+										g_userSetting.headMessages = p.HeadMessages
+										if p.Model != "" {
+											g_userSetting.model = p.Model
+										}
+
+										if p.MaxContext != 0 {
+											g_userSetting.maxConext = p.MaxContext
+										}
+										updateClearContextTitle(0)
+										g_userSetting.mask = p.Name
+
+										for ii, mm := range maskMenus {
+											if ii == idx {
+												mm.Check()
+											} else {
+												mm.Uncheck()
+											}
+										}
+									}
+								}()
+								maskMenus = append(maskMenus, m)
+							}
+						}
+					}
+				}
+			}
+		}
+	}()
+
 	updateClearContextTitle(0)
 	updateHotKeyTitle(fmt.Sprintf(UText("Copy the question then click \"%s\" to query GPT"), strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
 }

@@ -66,6 +66,7 @@ func getMaxContext() int {
 }
 
 type Prompt struct {
+	Name         string                             `json:"name"`
 	Model        string                             `json:"model"`
 	HeadMessages []gpt.ChatCompletionRequestMessage `json:"headMessages"`
 	MaxContext   int                                `json:"maxContext"`
@@ -87,4 +88,32 @@ func loadPrompt(filepath string) (Prompt, error) {
 	}
 
 	return prompt, nil
+}
+
+func parsePrompt(content string) (Prompt, error) {
+	var prompt Prompt
+
+	// Unmarshal the JSON data into the Prompt struct
+	err := json.Unmarshal([]byte(content), &prompt)
+	if err != nil {
+		return prompt, err
+	}
+
+	return prompt, nil
+}
+
+func savePrompt(prompt Prompt, filepath string) error {
+	// Marshal the Prompt struct into JSON data
+	data, err := json.Marshal(prompt)
+	if err != nil {
+		return err
+	}
+
+	// Write the JSON data to the file
+	err = ioutil.WriteFile(filepath, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

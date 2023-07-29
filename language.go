@@ -47,6 +47,9 @@ var languages = map[string]map[string]string{
 	"Clear Context %d/%d": {
 		"zh": "清除所有上下文 %d/%d",
 	},
+	"Import": {
+		"zh": "导入",
+	},
 }
 
 var LANG = "en"
