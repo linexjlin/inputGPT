@@ -9,6 +9,7 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/getlantern/systray"
+	"github.com/joho/godotenv"
 	icon "github.com/linexjlin/systray-icons/enter-the-keyboard"
 	"github.com/skratchdot/open-golang/open"
 )
@@ -46,6 +47,38 @@ func updateClearContextTitle(n int) {
 
 var updateHotKeyTitle func(string)
 
+func monitorFileModification(filepath string) {
+	fileInfo, err := os.Stat(filepath)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	modTime := fileInfo.ModTime()
+	fmt.Println("Initial modification time:", modTime)
+
+	// Calculate the end time after 30 minutes
+	endTime := time.Now().Add(30 * time.Minute)
+
+	for time.Now().Before(endTime) {
+		fileInfo, err = os.Stat(filepath)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		if modTime != fileInfo.ModTime() {
+			fmt.Println("Modification time changed:", fileInfo.ModTime())
+			modTime = fileInfo.ModTime()
+			godotenv.Load(filepath)
+		}
+
+		time.Sleep(time.Second * 3) // Sleep for 3 seconds before checking again
+	}
+
+	fmt.Println("Monitoring completed.")
+}
+
 func onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 
@@ -70,6 +103,7 @@ func onReady() {
 		for {
 			<-mSetKey.ClickedCh
 			open.Start("env.txt")
+			go monitorFileModification("env.txt")
 		}
 	}()
 

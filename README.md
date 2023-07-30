@@ -12,13 +12,15 @@ A program let you query GPT from any input area.
 
 # Usage
 ## Quick start
+1. Open InputGPT click "Set API KEY" to provide OpenAI Key. 
 1. Copy the text to clipboard
 1. Click `shift + space` to query GPT
 
 ## User define HotKey 
-
-Add a new line to .env file like this `GPT_HOTKEYS=space+shift`
+Click "Set API KEY" InputGPT will open `env.txt` file 
+Add a new line to the file like this `GPT_HOTKEYS=space+shift` then save and close the file.
 the keycode [reference](https://github.com/vcaesar/keycode/blob/main/keycode.go):
+![](https://ipfs.ee/ipfs/QmaBtanJEmt8krtLLAL2zE9QYyNodQ7bvkRofNuWABaZmn/d6636a7b-cb75-494f-84ac-3935382544d8.png)
 
 ## Import Prompt
 Just Copy the json like below copy one of them:
@@ -56,8 +58,6 @@ then click then import menu of the app．
 [For more templates](./prompts)
 
 # DEMO
-![](https://ipfs.ee/ipfs/QmNcQVdbLMm9WwjyHce4vvPL1mQhi1VJdAkc1B6sy69GdJ/9aee063e-5898-4429-81e0-ef7ba20521d3.png)
-
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/2EpdfYILbgQ/0.jpg)](https://www.youtube.com/watch?v=2EpdfYILbgQ "InputGTP DEMO")
 
 [translate demo](https://ipfs.ee/ipfs/QmepH3EbP71zaXxaLAfQt2domXZxnb7HuaAkxT4jzhajmk/7c5ec8d0-a3d2-4d06-b649-316456390599.mp4)
@@ -65,7 +65,7 @@ then click then import menu of the app．
 [code cloze](https://ipfs.ee/ipfs/QmRp351kZ9fB1y1k9vWCHJq3egG8wZT39LYeVr9RhzbkVU/a159ab5f-e308-4d02-8d64-9c02ea0fc48e.mp4)
 
 # Build 
-windows 
+## windows 
 ```cmd
 build_win.bat
 ```
