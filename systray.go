@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -176,7 +177,13 @@ func onReady() {
 						fmt.Println(e)
 					} else {
 						if p.Name != "" {
-							if e = savePrompt(p, fmt.Sprintf("prompts/%s.json", p.Name)); e == nil {
+							promptFilePath := fmt.Sprintf("prompts/%s.json", p.Name)
+							if _, err := os.Stat(promptFilePath); os.IsExist(err) {
+								fmt.Println("File exists.", promptFilePath)
+								continue
+							}
+
+							if e = savePrompt(p, promptFilePath); e == nil {
 								m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", p.Name), "Check Me", false)
 								maskCnt++
 								idx := maskCnt

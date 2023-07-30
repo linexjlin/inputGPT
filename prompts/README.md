@@ -14,7 +14,7 @@
   "maxContext": 20
 }
 ```
-## 翻译 Translate
+## Translate 翻译 
 ```json
 {
     "name":"翻译成中文",
@@ -42,7 +42,7 @@
     "maxContext": 1
   }
 ```
-## 自动回复 Automatic reply
+## Automatic reply 自动回复
 ```json
 {
     "name":"自动回复",
@@ -57,7 +57,7 @@
   }
 ```
 
-## 总结文章　Summary of the article
+## Summary of the article 总结文章
 ```json
 {
     "name":"总结文章",
@@ -68,12 +68,13 @@
         "content": "以中文markdown格式总结下面这篇文章"
       }
     ],
-    "maxContext": 1
+    "maxContext": 16
   }
 ```
 
-## 完型填空 Cloze
-Not only for reading comprehension, it can also be used for code completion and poetry completion.
+## Cloze 完型填空 
+Not only for reading comprehension, it can also be used for code completion and poetry completion. 
+不只是完形填空， 它还可以做代码补全，诗歌补全
 
 ```json
 {
