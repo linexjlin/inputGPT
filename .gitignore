@@ -1,3 +1,4 @@
 *.exe
 inputGPT
 .env
+env.txt

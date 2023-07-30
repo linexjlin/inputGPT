@@ -50,11 +50,29 @@ var languages = map[string]map[string]string{
 	"Import": {
 		"zh": "导入",
 	},
-	"Manager Prompts": {
+	"Manage Prompts": {
 		"zh": "管理引导词",
 	},
 	"Manager the prompts": {
 		"zh": "打开文件夹，管理引导词",
+	},
+	"Select this prompt": {
+		"zh": "选择这个Prompt",
+	},
+	"Open the project page": {
+		"zh": "打开项目页面",
+	},
+	"Set API KEY": {
+		"zh": "设置 API KEY",
+	},
+	"Modify, Delete prompts": {
+		"zh": "更新、删除引导词",
+	},
+	"Import a prompt from clipboard": {
+		"zh": "把剪贴板上的Prompt导入",
+	},
+	"Set the OpenAI KEY, baseurl etc..": {
+		"zh": "请设置OpenAI KEY，baseurl等参数。",
 	},
 }
 

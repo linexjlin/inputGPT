@@ -17,16 +17,16 @@
 ## 翻译 Translate
 ```json
 {
-  "name": "翻译成中文",
-  "model": "gpt-3.5-turbo-0613",
-  "headMessages": [
-    {
-      "role": "system",
-      "content": "Your a translator you translate any text I give you into Chinese. Just give me the result, do not explain."
-    }
-  ],
-  "maxContext": 1
-}
+    "name":"翻译成中文",
+    "model": "gpt-3.5-turbo-0613",
+    "headMessages": [
+      {
+        "role": "system",
+        "content": "Your a translator you translate any text I give you into Chinese. Here is the message:"
+      }
+    ],
+    "maxContext": 1
+  }
 ```
 
 ```json
