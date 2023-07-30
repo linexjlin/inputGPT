@@ -24,6 +24,7 @@ func OSDepCheck() {
 		if err != nil {
 			fmt.Printf("unable to create：%s\n", err)
 		}
+		os.Chdir(APP_SUPPORT_DIR)
 		fmt.Println("promptsDir created")
 	}
 
@@ -39,6 +40,7 @@ func OSDepCheck() {
 	}
 
 	godotenv.Load("env.txt")
+	os.Setenv("LANG", "en_US.UTF-8")
 	return
 }
 
