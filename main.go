@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/atotto/clipboard"
@@ -78,8 +79,15 @@ func registerHotKeys() {
 		assistantAns := ""
 		fmt.Print("### Assistant:\n")
 		for txt := range txtChan {
-			robotgo.TypeStr(txt)
 			fmt.Print(txt)
+			for i, t := range strings.Split(txt, "\n") {
+				if i > 0 {
+					robotgo.KeyTap("enter")
+				}
+				if len(t) > 0 {
+					robotgo.TypeStr(t)
+				}
+			}
 			assistantAns += txt
 		}
 		fmt.Print("\n")
