@@ -7,11 +7,11 @@ import (
 	"github.com/hanyuancheung/gpt-go"
 )
 
-func queryGTP(txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
+func queryGTP(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
 	var opt = gpt.WithBaseURL(getOpenAIBaseUrl())
 	client := gpt.NewClient(getOpenAIkey(), opt)
 
-	err := client.ChatCompletionStream(context.Background(), &gpt.ChatCompletionRequest{
+	err := client.ChatCompletionStream(ctx, &gpt.ChatCompletionRequest{
 		Model:    g_userSetting.model,
 		Messages: messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {

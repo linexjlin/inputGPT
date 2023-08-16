@@ -15,6 +15,7 @@ A program let you query GPT from any input area.
 1. Open InputGPT click "Set API KEY" to provide OpenAI Key. 
 1. Copy the text to clipboard
 1. Click `shift + space` to query GPT
+1. Press `ESC` key to stop generate
 
 ## User define HotKey 
 Click "Set API KEY" InputGPT will open `env.txt` file 

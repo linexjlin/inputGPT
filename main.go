@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -30,72 +31,106 @@ func initUserSetting() {
 	g_userSetting.headMessages = []gpt.ChatCompletionRequestMessage{
 		{
 			Role:    "system",
-			Content: "Just complete the text I give you,do not explain",
+			Content: "Just complete the text I give you, do not explain.",
 		},
 	}
 }
 
 func registerHotKeys() {
+	var txtChan chan string
+	ctx, cancel := context.WithCancel(context.Background())
+
 	gptHotkeys := getGPTHotkeys()
 	lastHit := time.Now()
 	fmt.Printf("--- Please press %s to auto generate text --- \n", gptHotkeys)
 	initUserSetting()
 
 	hook.Register(hook.KeyDown, gptHotkeys, func(e hook.Event) {
-		fmt.Println(gptHotkeys)
-		if time.Now().Sub(lastHit).Seconds() > 1.0 {
-			lastHit = time.Now()
-		} else {
-			return
-		}
+		go func() {
+			fmt.Println(gptHotkeys)
+			if time.Now().Sub(lastHit).Seconds() > 1.0 {
+				lastHit = time.Now()
+			} else {
+				return
+			}
 
-		clipboardContent, err := clipboard.ReadAll()
-		if err != nil {
-			fmt.Println("Failed to read clipboard content:", err)
-			return
-		}
+			clipboardContent, err := clipboard.ReadAll()
+			if err != nil {
+				fmt.Println("Failed to read clipboard content:", err)
+				return
+			}
 
-		if len(clipboardContent) < 1 {
-			fmt.Println("Empty question")
-			return
-		}
-		fmt.Println("### prompt:", g_userSetting.mask)
-		fmt.Println("### user:")
-		fmt.Println(clipboardContent)
-		messages := []gpt.ChatCompletionRequestMessage{}
+			if len(clipboardContent) < 1 {
+				fmt.Println("Empty question")
+				return
+			}
 
-		g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-			Role:    "user",
-			Content: clipboardContent,
-		})
-		msgIdx := 0
-		if len(g_userSetting.histMessages)-g_userSetting.maxConext > 0 {
-			msgIdx = len(g_userSetting.histMessages) - g_userSetting.maxConext
-		}
-		txtChan := make(chan string, 100)
-		messages = append(messages, g_userSetting.headMessages...)
-		go queryGTP(txtChan, append(messages, g_userSetting.histMessages[msgIdx:]...))
+			fmt.Println("### prompt:", g_userSetting.mask)
+			fmt.Println("### user:")
+			fmt.Println(clipboardContent)
+			messages := []gpt.ChatCompletionRequestMessage{}
 
-		assistantAns := ""
-		fmt.Print("### Assistant:\n")
-		for txt := range txtChan {
-			fmt.Print(txt)
-			for i, t := range strings.Split(txt, "\n") {
-				if i > 0 {
-					robotgo.KeyTap("enter")
-				}
-				if len(t) > 0 {
-					robotgo.TypeStr(t)
+			msgIdx := 0
+			if len(g_userSetting.histMessages)-g_userSetting.maxConext*2 > 0 {
+				msgIdx = len(g_userSetting.histMessages) - g_userSetting.maxConext*2
+			}
+
+			txtChan = make(chan string, 100)
+			messages = append(messages, g_userSetting.headMessages...)
+			messages = append(messages, g_userSetting.histMessages[msgIdx:]...)
+			messages = append(messages, gpt.ChatCompletionRequestMessage{
+				Role:    "user",
+				Content: clipboardContent,
+			})
+
+			ctx, cancel = context.WithCancel(context.Background())
+			go queryGTP(ctx, txtChan, messages)
+
+			//isCancel := false
+			assistantAns := ""
+			fmt.Print("### Assistant:\n")
+			for {
+				select {
+				case txt, ok := <-txtChan:
+					if !ok {
+						// txtChan is closed, exit the loop
+						//fmt.Println("complete")
+						fmt.Print("\n")
+						g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
+							Role:    "user",
+							Content: clipboardContent,
+						})
+
+						g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
+							Role:    "assistant",
+							Content: assistantAns,
+						})
+						updateClearContextTitle(len(g_userSetting.histMessages) / 2)
+						return
+					}
+					fmt.Print(txt)
+					for i, t := range strings.Split(txt, "\n") {
+						if i > 0 {
+							robotgo.KeyTap("enter")
+						}
+						if len(t) > 0 {
+							robotgo.TypeStr(t)
+						}
+					}
+					assistantAns += txt
+				case <-ctx.Done():
+					// ctx is done, exit the loop
+					return
 				}
 			}
-			assistantAns += txt
-		}
-		fmt.Print("\n")
-		g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-			Role:    "assistant",
-			Content: assistantAns,
-		})
-		updateClearContextTitle(len(g_userSetting.histMessages))
+		}()
+	})
+
+	hook.Register(hook.KeyDown, []string{"esc"}, func(e hook.Event) {
+		fmt.Println("esc")
+		go func() {
+			cancel()
+		}()
 	})
 
 	s := hook.Start()
