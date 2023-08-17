@@ -7,7 +7,7 @@ A program let you query GPT from any input area.
 
 ## Features
 *  Cross-platform [win,mac]
-*  Multilingual  [en,zh]
+*  Multilingual  [en,zh,jp,es,az]
 *  Customize prompts
 
 # Usage
