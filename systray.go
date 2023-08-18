@@ -212,12 +212,11 @@ func onReady() {
 					} else {
 						if p.Name != "" {
 							promptFilePath := fmt.Sprintf("prompts/%s.json", p.Name)
-							if _, err := os.Stat(promptFilePath); os.IsExist(err) {
+							if _, err := os.Stat(promptFilePath); err == nil {
 								fmt.Println("File exists.", promptFilePath)
-								continue
-							}
-
-							if e = savePrompt(p, promptFilePath); e == nil {
+								//continue
+							} else {
+								fmt.Println("create new", promptFilePath)
 								m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", p.Name), "Check Me", false)
 								maskCnt++
 								idx := maskCnt
@@ -247,6 +246,7 @@ func onReady() {
 								}()
 								maskMenus = append(maskMenus, m)
 							}
+							savePrompt(p, promptFilePath)
 						}
 					}
 				}
