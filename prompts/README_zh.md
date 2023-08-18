@@ -12,4 +12,7 @@
     "maxContext": 1
 }
 ```
+
+![](https://ipfs.io/ipfs/QmbV39V3cCarNqCS8yXnhBL67CdeTwPUj7Zydr85ybBgVM?filename=e8831869-a2d7-4433-89b9-35f5db272626.gif)
+
 用法复制微信消息然后按 `shift + space` 触发回复 [演示](https://ipfs.ee/ipfs/QmRH85P88ErsmkfpaLtV5pwLztrdPyCaTmyteBH6wAKab5/e8831869-a2d7-4433-89b9-35f5db272626.mp4)

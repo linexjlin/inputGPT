@@ -32,7 +32,7 @@ Just Copy the json like below copy one of them:
   "headMessages": [
     {
       "role": "system",
-      "content": "You are a help assistant."
+      "content": "You are a helpful assistant."
     }
   ],
   "maxContext": 20
