@@ -3,13 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hanyuancheung/gpt-go"
 )
 
 func queryGTP(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
-	var opt = gpt.WithBaseURL(getOpenAIBaseUrl())
-	client := gpt.NewClient(getOpenAIkey(), opt)
+	client := gpt.NewClient(
+		getOpenAIkey(),
+		gpt.WithBaseURL(getOpenAIBaseUrl()),
+		gpt.WithTimeout(600*time.Second),
+	)
 
 	err := client.ChatCompletionStream(ctx, &gpt.ChatCompletionRequest{
 		Model:    g_userSetting.model,
