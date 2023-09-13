@@ -19,6 +19,11 @@ func queryGTP(ctx context.Context, txtChan chan string, messages []gpt.ChatCompl
 		Model:    g_userSetting.model,
 		Messages: messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {
+		//fmt.Printf("%+v\n", response)
+		if len(response.Choices) == 0 {
+			txtChan <- fmt.Sprintf("%+v", response)
+			close(txtChan)
+		}
 		if response.Choices[0].Delta.Content != "" {
 			txtChan <- response.Choices[0].Delta.Content
 		}
