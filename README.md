@@ -16,6 +16,7 @@ A program let you query GPT from any input area.
 1. Copy the text to clipboard
 1. Click `shift + space` to query GPT
 1. Press `ESC` key to stop generate
+1. Triple click `ESC` key to quick clear context
 
 ## User define HotKey 
 Click "Set API KEY" InputGPT will open `env.txt` file 

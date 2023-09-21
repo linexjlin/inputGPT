@@ -126,7 +126,22 @@ func registerHotKeys() {
 		}()
 	})
 
+	escCnt := 0
+	lastEscHit := time.Now()
 	hook.Register(hook.KeyDown, []string{"esc"}, func(e hook.Event) {
+		fmt.Println("esc")
+
+		if time.Now().Sub(lastEscHit).Milliseconds() < 500 {
+			escCnt++
+			fmt.Println("increase escCnt to", escCnt)
+			if escCnt == 2 { //triple 'esc' click for quick clean context
+				clearContext()
+				escCnt = 0
+			}
+		} else {
+			escCnt = 0
+		}
+		lastEscHit = time.Now()
 		fmt.Println("esc")
 		go func() {
 			cancel()

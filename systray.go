@@ -129,8 +129,7 @@ func onReady() {
 			select {
 			case <-mClearContext.ClickedCh:
 				fmt.Println("Clear Context")
-				g_userSetting.histMessages = g_userSetting.histMessages[:0]
-				updateClearContextTitle(0)
+				clearContext()
 			}
 		}
 	}()
@@ -255,4 +254,10 @@ func onReady() {
 
 	updateClearContextTitle(0)
 	updateHotKeyTitle(fmt.Sprintf(UText("Copy the question then click \"%s\" to query GPT"), strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
+}
+
+func clearContext() {
+	fmt.Println("clean all context")
+	g_userSetting.histMessages = g_userSetting.histMessages[:0]
+	updateClearContextTitle(0)
 }
