@@ -162,13 +162,14 @@ func onReady() {
 				case <-m.ClickedCh:
 					fmt.Println(idx, filepath, mk)
 					if filepath == "" {
-						initUserSetting()
+						g_userSetting.initUserSetting()
 					} else {
 						if p, e := loadPrompt(filepath); e != nil {
 							fmt.Println(e)
 							continue
 						} else {
-							initUserSetting() // reset all user settings
+							g_userSetting.initUserSetting() // reset all user settings
+
 							g_userSetting.headMessages = p.HeadMessages
 							if p.Model != "" {
 								g_userSetting.model = p.Model
@@ -221,7 +222,7 @@ func onReady() {
 								go func() {
 									for {
 										<-m.ClickedCh
-										initUserSetting() // reset all user settings
+										g_userSetting.initUserSetting() // reset all user settings
 										g_userSetting.headMessages = p.HeadMessages
 										if p.Model != "" {
 											g_userSetting.model = p.Model

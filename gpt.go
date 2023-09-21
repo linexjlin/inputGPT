@@ -9,6 +9,8 @@ import (
 )
 
 func queryGTP(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
+	fmt.Println("Query messages:")
+	showAsJson(messages)
 	client := gpt.NewClient(
 		getOpenAIkey(),
 		gpt.WithBaseURL(getOpenAIBaseUrl()),
@@ -19,16 +21,15 @@ func queryGTP(ctx context.Context, txtChan chan string, messages []gpt.ChatCompl
 		Model:    g_userSetting.model,
 		Messages: messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {
+		//fmt.Println(response.Choices)
 		//fmt.Printf("%+v\n", response)
-		if len(response.Choices) == 0 {
-			txtChan <- fmt.Sprintf("%+v", response)
-			close(txtChan)
-		}
-		if response.Choices[0].Delta.Content != "" {
-			txtChan <- response.Choices[0].Delta.Content
-		}
-		if response.Choices[0].FinishReason == "stop" {
-			close(txtChan)
+		if len(response.Choices) > 0 {
+			if response.Choices[0].Delta.Content != "" {
+				txtChan <- response.Choices[0].Delta.Content
+			}
+			if response.Choices[0].FinishReason == "stop" {
+				close(txtChan)
+			}
 		}
 	})
 	if err != nil {

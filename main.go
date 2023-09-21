@@ -22,9 +22,7 @@ type UserSetting struct {
 	histMessages []gpt.ChatCompletionRequestMessage
 }
 
-var g_userSetting UserSetting
-
-func initUserSetting() {
+func (us *UserSetting) initUserSetting() {
 	g_userSetting.mask = "Default"
 	g_userSetting.model = "gpt-3.5-turbo-0613"
 	g_userSetting.maxConext = getMaxContext()
@@ -36,6 +34,27 @@ func initUserSetting() {
 	}
 }
 
+func (us *UserSetting) reloadMask() {
+	if us.mask == "Default" {
+		return
+	}
+	filepath := fmt.Sprintf("prompts/%s.json", us.mask)
+	if p, e := loadPrompt(filepath); e != nil {
+		fmt.Println(e)
+	} else {
+		g_userSetting.headMessages = p.HeadMessages
+		if p.Model != "" {
+			g_userSetting.model = p.Model
+		}
+
+		if p.MaxContext != 0 {
+			g_userSetting.maxConext = p.MaxContext
+		}
+	}
+}
+
+var g_userSetting UserSetting
+
 func registerHotKeys() {
 	var txtChan chan string
 	ctx, cancel := context.WithCancel(context.Background())
@@ -43,7 +62,7 @@ func registerHotKeys() {
 	gptHotkeys := getGPTHotkeys()
 	lastHit := time.Now()
 	fmt.Printf("--- Please press %s to auto generate text --- \n", gptHotkeys)
-	initUserSetting()
+	g_userSetting.initUserSetting()
 
 	hook.Register(hook.KeyDown, gptHotkeys, func(e hook.Event) {
 		go func() {
@@ -64,6 +83,8 @@ func registerHotKeys() {
 				fmt.Println("Empty question")
 				return
 			}
+
+			g_userSetting.reloadMask()
 
 			fmt.Println("### prompt:", g_userSetting.mask)
 			fmt.Println("### user:")
