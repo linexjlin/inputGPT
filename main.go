@@ -96,6 +96,7 @@ func registerHotKeys() {
 				msgIdx = len(g_userSetting.histMessages) - g_userSetting.maxConext*2
 			}
 
+			fmt.Println("len hist:", len(g_userSetting.histMessages), "msgIdx:", msgIdx, "maxContext:", g_userSetting.maxConext)
 			txtChan = make(chan string, 100)
 			messages = append(messages, g_userSetting.headMessages...)
 			messages = append(messages, g_userSetting.histMessages[msgIdx:]...)
