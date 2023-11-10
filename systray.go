@@ -177,6 +177,7 @@ func onReady() {
 
 							g_userSetting.maxConext = p.MaxContext
 
+							clearContext()
 							updateClearContextTitle(0)
 							g_userSetting.mask = mk
 						}
@@ -230,6 +231,8 @@ func onReady() {
 										if p.MaxContext != 0 {
 											g_userSetting.maxConext = p.MaxContext
 										}
+
+										clearContext()
 										updateClearContextTitle(0)
 										g_userSetting.mask = p.Name
 

@@ -24,7 +24,7 @@ type UserSetting struct {
 
 func (us *UserSetting) initUserSetting() {
 	g_userSetting.mask = "Default"
-	g_userSetting.model = "gpt-3.5-turbo-0613"
+	g_userSetting.model = "gpt-3.5-turbo"
 	g_userSetting.maxConext = getMaxContext()
 	g_userSetting.headMessages = []gpt.ChatCompletionRequestMessage{
 		{
