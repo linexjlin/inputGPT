@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -26,6 +27,7 @@ func (us *UserSetting) initUserSetting() {
 	g_userSetting.mask = "Default"
 	g_userSetting.model = "gpt-3.5-turbo"
 	g_userSetting.maxConext = getMaxContext()
+	g_userSetting.histMessages = []gpt.ChatCompletionRequestMessage{}
 	g_userSetting.headMessages = []gpt.ChatCompletionRequestMessage{
 		{
 			Role:    "system",
@@ -91,19 +93,38 @@ func registerHotKeys() {
 			fmt.Println(clipboardContent)
 			messages := []gpt.ChatCompletionRequestMessage{}
 
-			msgIdx := 0
-			if len(g_userSetting.histMessages)-g_userSetting.maxConext*2 > 0 {
-				msgIdx = len(g_userSetting.histMessages) - g_userSetting.maxConext*2
+			txtChan = make(chan string, 100)
+
+			//fmt.Println(g_userSetting.histMessages)
+
+			if len(g_userSetting.histMessages) == 0 {
+				fmt.Println("head messages:", g_userSetting.headMessages)
+				g_userSetting.histMessages = append(g_userSetting.histMessages, renderMessages(g_userSetting.headMessages, clipboardContent)...)
+				messages = append(messages, g_userSetting.histMessages...)
+			} else {
+				messages = append(messages, g_userSetting.histMessages[0:len(g_userSetting.headMessages)]...)
+				fmt.Println("maxConext:", g_userSetting.maxConext)
+
+				if int(math.Ceil(float64(len(g_userSetting.histMessages)-len(g_userSetting.headMessages))/2)) <= g_userSetting.maxConext {
+					messages = append(messages, g_userSetting.histMessages[len(g_userSetting.headMessages):]...)
+				} else {
+					interCnt := len(g_userSetting.histMessages) - len(g_userSetting.headMessages)
+					if interCnt%2 == 1 {
+						messages = append(messages, g_userSetting.histMessages[len(g_userSetting.headMessages)])
+						messages = append(messages, g_userSetting.histMessages[len(g_userSetting.histMessages)-((g_userSetting.maxConext-1)*2):]...)
+					}
+				}
 			}
 
-			fmt.Println("len hist:", len(g_userSetting.histMessages), "msgIdx:", msgIdx, "maxContext:", g_userSetting.maxConext)
-			txtChan = make(chan string, 100)
-			messages = append(messages, g_userSetting.headMessages...)
-			messages = append(messages, g_userSetting.histMessages[msgIdx:]...)
-			messages = append(messages, gpt.ChatCompletionRequestMessage{
-				Role:    "user",
-				Content: clipboardContent,
-			})
+			fmt.Println("the last message Role:", messages[len(messages)-1].Role)
+			is_last_msg_user := (g_userSetting.histMessages[len(g_userSetting.histMessages)-1].Role == "user")
+
+			if !is_last_msg_user {
+				messages = append(messages, gpt.ChatCompletionRequestMessage{
+					Role:    "user",
+					Content: clipboardContent,
+				})
+			}
 
 			ctx, cancel = context.WithCancel(context.Background())
 			go queryGPT(ctx, txtChan, messages)
@@ -118,16 +139,19 @@ func registerHotKeys() {
 						// txtChan is closed, exit the loop
 						//fmt.Println("complete")
 						fmt.Print("\n")
-						g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-							Role:    "user",
-							Content: clipboardContent,
-						})
+						if !is_last_msg_user {
+							g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
+								Role:    "user",
+								Content: clipboardContent,
+							})
+						}
 
 						g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
 							Role:    "assistant",
 							Content: assistantAns,
 						})
-						updateClearContextTitle(len(g_userSetting.histMessages) / 2)
+
+						updateClearContextTitle(int(math.Ceil(float64(len(g_userSetting.histMessages)-len(g_userSetting.headMessages)) / 2)))
 						return
 					}
 					fmt.Print(txt)
