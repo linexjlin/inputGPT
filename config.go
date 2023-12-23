@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"runtime"
 	"strconv"
@@ -57,11 +56,11 @@ func getMaxContext() int {
 	maxContextInt, err := strconv.Atoi(maxContext)
 	if err != nil {
 		fmt.Println("MAX_CONTEXT不是一个有效的数字")
-		return 4
+		return 0
 	} else {
 		return maxContextInt
 	}
-	return 4
+	return 0
 }
 
 type Prompt struct {
@@ -75,7 +74,7 @@ func loadPrompt(filepath string) (Prompt, error) {
 	var prompt Prompt
 
 	// Read the file contents
-	data, err := ioutil.ReadFile(filepath)
+	data, err := os.ReadFile(filepath)
 	if err != nil {
 		return prompt, err
 	}
@@ -109,7 +108,7 @@ func savePrompt(prompt Prompt, filepath string) error {
 	}
 
 	// Write the JSON data to the file
-	err = ioutil.WriteFile(filepath, data, 0644)
+	err = os.WriteFile(filepath, data, 0644)
 	if err != nil {
 		return err
 	}

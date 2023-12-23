@@ -106,7 +106,7 @@ func registerHotKeys() {
 			})
 
 			ctx, cancel = context.WithCancel(context.Background())
-			go queryGTP(ctx, txtChan, messages)
+			go queryGPT(ctx, txtChan, messages)
 
 			//isCancel := false
 			assistantAns := ""

@@ -8,7 +8,7 @@ import (
 	"github.com/hanyuancheung/gpt-go"
 )
 
-func queryGTP(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
+func queryGPT(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
 	fmt.Println("Query messages:")
 	showAsJson(messages)
 	client := gpt.NewClient(

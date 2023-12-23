@@ -39,6 +39,8 @@ github.com/go-vgo/robotgo v0.100.10 h1:bZe7AslG6oq5ops1SWUxsPfM9Z3QQvlqfA3ezxLFN
 github.com/go-vgo/robotgo v0.100.10/go.mod h1:7QeIpSHX7bjeXWRPxvQeKSx9mHI+3l80Ahq+CQF0C68=
 github.com/godbus/dbus/v5 v5.0.3/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/goki/freetype v0.0.0-20181231101311-fa8a33aabaff/go.mod h1:wfqRWLHRBsRgkp5dmbG56SA0DmVtwrF5N3oPdI8t+Aw=
+github.com/gordonklaus/portaudio v0.0.0-20230709114228-aafa478834f5 h1:5AlozfqaVjGYGhms2OsdUyfdJME76E6rx5MdGpjzZpc=
+github.com/gordonklaus/portaudio v0.0.0-20230709114228-aafa478834f5/go.mod h1:WY8R6YKlI2ZI3UyzFk7P6yGSuS+hFwNtEzrexRyD7Es=
 github.com/hanyuancheung/gpt-go v0.1.0 h1:O27d2rcVU03u3hiLWNaOoe6UbpUFujHSVTvqyr5fa8o=
 github.com/hanyuancheung/gpt-go v0.1.0/go.mod h1:aLG8FXFCbY6BLOGJnjMboGftARjZG1iVfcQVyopHTqA=
 github.com/jackmordaunt/icns v0.0.0-20181231085925-4f16af745526/go.mod h1:UQkeMHVoNcyXYq9otUupF7/h/2tmHlhrS2zw7ZVvUqc=
