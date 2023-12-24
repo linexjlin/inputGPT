@@ -29,7 +29,7 @@ Just Copy the json like below copy one of them:
 ```json
 {
   "name": "ChatGPT",
-  "model": "gpt-3.5-turbo-0613",
+  "model": "gpt-3.5-turbo",
   "headMessages": [
     {
       "role": "system",
@@ -42,27 +42,36 @@ Just Copy the json like below copy one of them:
 
 ```json
 {
-  "name": "翻译成中文",
-  "model": "gpt-3.5-turbo-0613",
+  "name": "Translate",
+  "model": "gpt-3.5-turbo",
   "headMessages": [
     {
       "role": "system",
-      "content": "Your a translator you translate any text I give you into Chinese. Just give me the result, do not explain."
+      "content": "Your a translator you translate any text I give you into {{.mylang}}. Just give me the result, do not explain."
+    },
+    {
+      "role": "user",
+      "content": "{{.msg}}"
     }
   ],
-  "maxContext": 1
+  "maxContext": 0
 }
 ```
 then click then import menu of the app．
 
 ![](https://ipfs.ee/ipfs/QmPW2FcmLvfZLbT5Ak6FYWRSc9FWJ5p3waQ4PrCPEzeH5R/6d498736-0911-460a-8fe2-8e91c8ca3340.png)
 
-[For more templates](./prompts)
+[For more templates](https://inputgpt.vercel.app/)
 
 # DEMO
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/2EpdfYILbgQ/0.jpg)](https://www.youtube.com/watch?v=2EpdfYILbgQ "InputGTP DEMO")
 
-[translate demo](https://ipfs.ee/ipfs/QmepH3EbP71zaXxaLAfQt2domXZxnb7HuaAkxT4jzhajmk/7c5ec8d0-a3d2-4d06-b649-316456390599.mp4)
+## ChatGPT
+
+![ChatGPT](https://ipfs.ee/ipfs/QmdQetjhkFgNDGf5HhSgbML1rRcYPWQsexxiPggATZ3qLm/d0d6c03a-b0cc-40f3-952c-cb81ef88f6f6.gif)
+
+## Bidirectional Translation
+
+![](https://ipfs.ee/ipfs/QmfJUmAURswjtncxk94KE9RKJUpgH72tcsN9Mq6FkGUiZp/c1fe75b6-eb44-47dd-b138-4056045e57d9.gif)
 
 Work like github copilot complete the codes in the middle of code file.
 [code cloze](https://ipfs.ee/ipfs/QmRp351kZ9fB1y1k9vWCHJq3egG8wZT39LYeVr9RhzbkVU/a159ab5f-e308-4d02-8d64-9c02ea0fc48e.mp4)
