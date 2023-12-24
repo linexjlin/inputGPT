@@ -97,7 +97,7 @@ func registerHotKeys() {
 
 			//fmt.Println(g_userSetting.histMessages)
 
-			if len(g_userSetting.histMessages) == 0 {
+			if len(g_userSetting.histMessages) == 0 || g_userSetting.maxConext == 0 {
 				fmt.Println("head messages:", g_userSetting.headMessages)
 				g_userSetting.histMessages = append(g_userSetting.histMessages, renderMessages(g_userSetting.headMessages, clipboardContent)...)
 				messages = append(messages, g_userSetting.histMessages...)
@@ -139,19 +139,21 @@ func registerHotKeys() {
 						// txtChan is closed, exit the loop
 						//fmt.Println("complete")
 						fmt.Print("\n")
-						if !is_last_msg_user {
+						if g_userSetting.maxConext > 0 {
+							if !is_last_msg_user {
+								g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
+									Role:    "user",
+									Content: clipboardContent,
+								})
+							}
+
 							g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-								Role:    "user",
-								Content: clipboardContent,
+								Role:    "assistant",
+								Content: assistantAns,
 							})
+
+							updateClearContextTitle(int(math.Ceil(float64(len(g_userSetting.histMessages)-len(g_userSetting.headMessages)) / 2)))
 						}
-
-						g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-							Role:    "assistant",
-							Content: assistantAns,
-						})
-
-						updateClearContextTitle(int(math.Ceil(float64(len(g_userSetting.histMessages)-len(g_userSetting.headMessages)) / 2)))
 						return
 					}
 					fmt.Print(txt)
