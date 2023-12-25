@@ -1,0 +1,62 @@
+{
+    "About": {
+        "de": "Über"
+    },
+    "About the App": {
+        "de": "Über die App"
+    },
+    "Clear Context": {
+        "de": "Kontext löschen"
+    },
+    "Clear Context %d/%d": {
+        "de": "Kontext löschen %d/%d"
+    },
+    "Click to active GPT": {
+        "de": "Klicken Sie, um GPT zu aktivieren"
+    },
+    "Copy the question then click \"%s\" to query GPT": {
+        "de": "Kopieren Sie die Frage und klicken Sie \"%s\", um GPT abzufragen"
+    },
+    "Default": {
+        "de": "Standard"
+    },
+    "Exit": {
+        "de": "Beenden"
+    },
+    "Import": {
+        "de": "Importieren"
+    },
+    "Import a prompt from clipboard": {
+        "de": "Prompt aus der Zwischenablage importieren"
+    },
+    "InputGPT": {
+        "de": "InputGPT"
+    },
+    "InputGPT a Helpful input Assistant": {
+        "de": "InputGPT ein hilfreicher Eingabeassistent"
+    },
+    "Manage Prompts": {
+        "de": "Prompts verwalten"
+    },
+    "Manager the prompts": {
+        "de": "Prompts verwalten"
+    },
+    "Modify, Delete prompts": {
+        "de": "Prompts bearbeiten, löschen"
+    },
+    "Open the project page": {
+        "de": "Projektseite öffnen"
+    },
+    "Quit the whole app": {
+        "de": "Die App beenden"
+    },
+    "Select this prompt": {
+        "de": "Diesen Prompt auswählen"
+    },
+    "Set API KEY": {
+        "de": "API-Schlüssel festlegen"
+    },
+    "Set the OpenAI KEY, baseurl etc..": {
+        "de": "Den OpenAI-Schlüssel, die Basis-URL usw. festlegen"
+    }
+}

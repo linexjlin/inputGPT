@@ -1,0 +1,62 @@
+{
+    "About": {
+        "jp": "について"
+    },
+    "About the App": {
+        "jp": "アプリについて"
+    },
+    "Clear Context": {
+        "jp": "コンテキストをクリアする"
+    },
+    "Clear Context %d/%d": {
+        "jp": "コンテキストをクリアする %d/%d"
+    },
+    "Click to active GPT": {
+        "jp": "クリックしてGPTを起動"
+    },
+    "Copy the question then click \"%s\" to query GPT": {
+        "jp": "質問をコピーして\"%s\"をクリックし、GPTにクエリを送信します"
+    },
+    "Default": {
+        "jp": "デフォルト"
+    },
+    "Exit": {
+        "jp": "終了"
+    },
+    "Import": {
+        "jp": "インポート"
+    },
+    "Import a prompt from clipboard": {
+        "jp": "クリップボードからプロンプトをインポート"
+    },
+    "InputGPT": {
+        "jp": "InputGPT"
+    },
+    "InputGPT a Helpful input Assistant": {
+        "jp": "InputGPT"
+    },
+    "Manage Prompts": {
+        "jp": "プロンプトの管理"
+    },
+    "Manager the prompts": {
+        "jp": "フォルダを開き、プロンプトを管理します"
+    },
+    "Modify, Delete prompts": {
+        "jp": "プロンプトの変更、削除"
+    },
+    "Open the project page": {
+        "jp": "プロジェクトページを開く"
+    },
+    "Quit the whole app": {
+        "jp": "アプリを終了する"
+    },
+    "Select this prompt": {
+        "jp": "このプロンプトを選択"
+    },
+    "Set API KEY": {
+        "jp": "APIキーを設定する"
+    },
+    "Set the OpenAI KEY, baseurl etc..": {
+        "jp": "OpenAIキー、ベースURLなどを設定する"
+    }
+}

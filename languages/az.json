@@ -1,0 +1,62 @@
+{
+    "About": {
+        "az": "Haqqında"
+    },
+    "About the App": {
+        "az": "Tətbiq haqqında"
+    },
+    "Clear Context": {
+        "az": "Bütün bağlamları təmizləyin"
+    },
+    "Clear Context %d/%d": {
+        "az": "Bütün bağlamları təmizləyin %d/%d"
+    },
+    "Click to active GPT": {
+        "az": "GPT-i aktivləşdirmək üçün basın"
+    },
+    "Copy the question then click \"%s\" to query GPT": {
+        "az": "Sualın mətnini kopyalayın, daha sonra \"%s\"-ə vurun GPT sorğusunu edin"
+    },
+    "Default": {
+        "az": "Standart"
+    },
+    "Exit": {
+        "az": "Çıxış"
+    },
+    "Import": {
+        "az": "İdxal"
+    },
+    "Import a prompt from clipboard": {
+        "az": "Mübadilə panelindən bir təlim idxal edin"
+    },
+    "InputGPT": {
+        "az": "InputGPT"
+    },
+    "InputGPT a Helpful input Assistant": {
+        "az": "InputGPT"
+    },
+    "Manage Prompts": {
+        "az": "Təlimləri idarə edin"
+    },
+    "Manager the prompts": {
+        "az": "Qovluğu açın, təlimləri idarə edin"
+    },
+    "Modify, Delete prompts": {
+        "az": "Təlimləri dəyişdirin, silin"
+    },
+    "Open the project page": {
+        "az": "Proyekt səhifəsini açın"
+    },
+    "Quit the whole app": {
+        "az": "Tətbiqdan çıxın"
+    },
+    "Select this prompt": {
+        "az": "Bu təlimi seçin"
+    },
+    "Set API KEY": {
+        "az": "API AÇARI təyin edin"
+    },
+    "Set the OpenAI KEY, baseurl etc..": {
+        "az": "OpenAI AÇARI, baseurl və s. ayarlayın."
+    }
+}

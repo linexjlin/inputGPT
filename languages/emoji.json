@@ -1,0 +1,62 @@
+{
+    "About": {
+        "emoji": "ℹ️"
+    },
+    "About the App": {
+        "emoji": "📱"
+    },
+    "Clear Context": {
+        "emoji": "🧹"
+    },
+    "Clear Context %d/%d": {
+        "emoji": "🧼"
+    },
+    "Click to active GPT": {
+        "emoji": "🖱️"
+    },
+    "Copy the question then click \"%s\" to query GPT": {
+        "emoji": "📋"
+    },
+    "Default": {
+        "emoji": "🛠️"
+    },
+    "Exit": {
+        "emoji": "🚪"
+    },
+    "Import": {
+        "emoji": "📥"
+    },
+    "Import a prompt from clipboard": {
+        "emoji": "📋"
+    },
+    "InputGPT": {
+        "emoji": "🖮"
+    },
+    "InputGPT a Helpful input Assistant": {
+        "emoji": "🤖"
+    },
+    "Manage Prompts": {
+        "emoji": "⚙️"
+    },
+    "Manager the prompts": {
+        "emoji": "🗂️"
+    },
+    "Modify, Delete prompts": {
+        "emoji": "✏️"
+    },
+    "Open the project page": {
+        "emoji": "🌐"
+    },
+    "Quit the whole app": {
+        "emoji": "❌"
+    },
+    "Select this prompt": {
+        "emoji": "✅"
+    },
+    "Set API KEY": {
+        "emoji": "🔑"
+    },
+    "Set the OpenAI KEY, baseurl etc..": {
+        "emoji": "🔧"
+    }
+}

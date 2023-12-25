@@ -201,8 +201,9 @@ func registerHotKeys() {
 }
 
 func main() {
-	godotenv.Load("env.txt")
 	setLang()
+	g_languages.Load()
+	godotenv.Load("env.txt")
 	OSDepCheck()
 	go registerHotKeys()
 	systray.Run(onReady, onExit)

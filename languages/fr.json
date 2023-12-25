@@ -1,0 +1,62 @@
+{
+    "About": {
+        "fr": "À propos"
+    },
+    "About the App": {
+        "fr": "À propos de l'application"
+    },
+    "Clear Context": {
+        "fr": "Effacer le contexte"
+    },
+    "Clear Context %d/%d": {
+        "fr": "Effacer le contexte %d/%d"
+    },
+    "Click to active GPT": {
+        "fr": "Cliquez pour activer GPT"
+    },
+    "Copy the question then click \"%s\" to query GPT": {
+        "fr": "Copiez la question, puis cliquez sur \"%s\" pour interroger GPT"
+    },
+    "Default": {
+        "fr": "Par défaut"
+    },
+    "Exit": {
+        "fr": "Quitter"
+    },
+    "Import": {
+        "fr": "Importer"
+    },
+    "Import a prompt from clipboard": {
+        "fr": "Importer une incitation depuis le presse-papiers"
+    },
+    "InputGPT": {
+        "fr": "InputGPT"
+    },
+    "InputGPT a Helpful input Assistant": {
+        "fr": "InputGPT, un assistant d'entrée utile"
+    },
+    "Manage Prompts": {
+        "fr": "Gérer les incitations"
+    },
+    "Manager the prompts": {
+        "fr": "Gérer les incitations"
+    },
+    "Modify, Delete prompts": {
+        "fr": "Modifier, supprimer les incitations"
+    },
+    "Open the project page": {
+        "fr": "Ouvrir la page du projet"
+    },
+    "Quit the whole app": {
+        "fr": "Quitter l'application"
+    },
+    "Select this prompt": {
+        "fr": "Sélectionnez cette incitation"
+    },
+    "Set API KEY": {
+        "fr": "Configurer la clé API"
+    },
+    "Set the OpenAI KEY, baseurl etc..": {
+        "fr": "Configurer la clé OpenAI, l'URL de base, etc..."
+    }
+}
