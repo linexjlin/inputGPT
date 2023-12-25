@@ -56,6 +56,9 @@
     "Set API KEY": {
         "zh": "设置 API KEY"
     },
+    "Bi-Translate": {
+        "zh": "双向互译"
+    },
     "Set the OpenAI KEY, baseurl etc..": {
         "zh": "请设置OpenAI KEY，baseurl等参数。"
     }

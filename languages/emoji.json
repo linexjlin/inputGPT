@@ -56,6 +56,9 @@
     "Set API KEY": {
         "emoji": "🔑"
     },
+    "Bi-Translate": {
+        "emoji": "🔄"
+    },
     "Set the OpenAI KEY, baseurl etc..": {
         "emoji": "🔧"
     }
