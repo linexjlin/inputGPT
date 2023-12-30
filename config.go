@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
 )
 
@@ -28,16 +27,6 @@ func getGPTHotkeys() []string {
 		}
 	}
 	return strings.Split(hotkeys, "+")
-}
-
-func pressPaste() {
-	if runtime.GOOS == "windows" {
-		robotgo.KeyTap("v", "control")
-	} else if runtime.GOOS == "darwin" {
-		robotgo.KeyTap("v", "command")
-	} else {
-		robotgo.KeyTap("v", "control")
-	}
 }
 
 func getOpenAIkey() string {
@@ -60,18 +49,17 @@ func getMaxContext() int {
 	} else {
 		return maxContextInt
 	}
-	return 0
 }
 
-type Prompt struct {
+type ModePrompt struct {
 	Name         string                             `json:"name"`
 	Model        string                             `json:"model"`
 	HeadMessages []gpt.ChatCompletionRequestMessage `json:"headMessages"`
 	MaxContext   int                                `json:"maxContext"`
 }
 
-func loadPrompt(filepath string) (Prompt, error) {
-	var prompt Prompt
+func loadModePrompt(filepath string) (ModePrompt, error) {
+	var prompt ModePrompt
 
 	// Read the file contents
 	data, err := os.ReadFile(filepath)
@@ -79,7 +67,7 @@ func loadPrompt(filepath string) (Prompt, error) {
 		return prompt, err
 	}
 
-	// Unmarshal the JSON data into the Prompt struct
+	// Unmarshal the JSON data into the ModePrompt struct
 	err = json.Unmarshal(data, &prompt)
 	if err != nil {
 		return prompt, err
@@ -88,10 +76,10 @@ func loadPrompt(filepath string) (Prompt, error) {
 	return prompt, nil
 }
 
-func parsePrompt(content string) (Prompt, error) {
-	var prompt Prompt
+func parseModePrompt(content string) (ModePrompt, error) {
+	var prompt ModePrompt
 
-	// Unmarshal the JSON data into the Prompt struct
+	// Unmarshal the JSON data into the ModePrompt struct
 	err := json.Unmarshal([]byte(content), &prompt)
 	if err != nil {
 		return prompt, err
@@ -100,8 +88,8 @@ func parsePrompt(content string) (Prompt, error) {
 	return prompt, nil
 }
 
-func savePrompt(prompt Prompt, filepath string) error {
-	// Marshal the Prompt struct into JSON data
+func saveModePrompt(prompt ModePrompt, filepath string) error {
+	// Marshal the ModePrompt struct into JSON data
 	data, err := json.Marshal(prompt)
 	if err != nil {
 		return err

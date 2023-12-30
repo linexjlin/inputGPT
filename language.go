@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/jeandeaual/go-locale"
@@ -13,7 +14,7 @@ import (
 //go:embed languages/*
 var langDatas embed.FS
 
-var LANG = "en"
+var MYLANG = "en"
 
 type Language struct {
 	Data map[string]map[string]string
@@ -23,16 +24,15 @@ var g_languages = Language{Data: make(map[string]map[string]string)}
 
 // give the right lanuage with query text when no match return the langText itself
 func UText(langText string) string {
-	translated := ""
+	translated := langText
 	if lang, ok := g_languages.Data[langText]; ok {
-		if text, ok := lang[LANG]; ok {
+		if text, ok := lang[MYLANG]; ok {
 			translated = text
 		}
 	} else {
-		if LANG != "en" {
-			fmt.Printf("unmatch:\"%s\" \"%s\"\n", langText, LANG)
+		if MYLANG != "en" {
+			fmt.Printf("unmatch:\"%s\" \"%s\"\n", langText, MYLANG)
 		}
-		translated = langText
 	}
 
 	emoji := ""
@@ -48,10 +48,15 @@ func UText(langText string) string {
 }
 
 func setLang() {
+	if lang := os.Getenv("MYLANG"); lang != "" {
+		fmt.Println("using user lang:", lang)
+		MYLANG = lang
+		return
+	}
 	userLanguage, err := locale.GetLanguage()
 	if err == nil {
 		fmt.Println("Current Language:", userLanguage)
-		LANG = userLanguage
+		MYLANG = userLanguage
 	}
 }
 

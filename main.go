@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"math"
 	"strings"
 	"time"
 
@@ -15,48 +14,6 @@ import (
 	hook "github.com/robotn/gohook"
 )
 
-type UserSetting struct {
-	mask         string
-	model        string
-	maxConext    int
-	headMessages []gpt.ChatCompletionRequestMessage
-	histMessages []gpt.ChatCompletionRequestMessage
-}
-
-func (us *UserSetting) initUserSetting() {
-	g_userSetting.mask = "Default"
-	g_userSetting.model = "gpt-3.5-turbo"
-	g_userSetting.maxConext = getMaxContext()
-	g_userSetting.histMessages = []gpt.ChatCompletionRequestMessage{}
-	g_userSetting.headMessages = []gpt.ChatCompletionRequestMessage{
-		{
-			Role:    "system",
-			Content: "Just complete the text I give you, do not explain.",
-		},
-	}
-}
-
-func (us *UserSetting) reloadMask() {
-	if us.mask == "Default" {
-		return
-	}
-	filepath := fmt.Sprintf("prompts/%s.json", us.mask)
-	if p, e := loadPrompt(filepath); e != nil {
-		fmt.Println(e)
-	} else {
-		g_userSetting.headMessages = p.HeadMessages
-		if p.Model != "" {
-			g_userSetting.model = p.Model
-		}
-
-		if p.MaxContext != 0 {
-			g_userSetting.maxConext = p.MaxContext
-		}
-	}
-}
-
-var g_userSetting UserSetting
-
 func registerHotKeys() {
 	var txtChan chan string
 	ctx, cancel := context.WithCancel(context.Background())
@@ -64,7 +21,7 @@ func registerHotKeys() {
 	gptHotkeys := getGPTHotkeys()
 	lastHit := time.Now()
 	fmt.Printf("--- Please press %s to auto generate text --- \n", gptHotkeys)
-	g_userSetting.initUserSetting()
+	g_userCore.initUserCore()
 
 	hook.Register(hook.KeyDown, gptHotkeys, func(e hook.Event) {
 		go func() {
@@ -86,50 +43,22 @@ func registerHotKeys() {
 				return
 			}
 
-			g_userSetting.reloadMask()
+			g_userCore.reloadMask()
 
-			fmt.Println("### prompt:", g_userSetting.mask)
+			fmt.Println("### prompt:", g_userCore.mask)
 			fmt.Println("### user:")
 			fmt.Println(clipboardContent)
-			messages := []gpt.ChatCompletionRequestMessage{}
+			prompts, new := g_userCore.GeneratePromptMessages(clipboardContent)
 
-			txtChan = make(chan string, 100)
-
-			//fmt.Println(g_userSetting.histMessages)
-
-			if len(g_userSetting.histMessages) == 0 || g_userSetting.maxConext == 0 {
-				fmt.Println("head messages:", g_userSetting.headMessages)
-				g_userSetting.histMessages = append(g_userSetting.histMessages, renderMessages(g_userSetting.headMessages, clipboardContent)...)
-				messages = append(messages, g_userSetting.histMessages...)
-			} else {
-				messages = append(messages, g_userSetting.histMessages[0:len(g_userSetting.headMessages)]...)
-				fmt.Println("maxConext:", g_userSetting.maxConext)
-
-				if int(math.Ceil(float64(len(g_userSetting.histMessages)-len(g_userSetting.headMessages))/2)) <= g_userSetting.maxConext {
-					messages = append(messages, g_userSetting.histMessages[len(g_userSetting.headMessages):]...)
-				} else {
-					interCnt := len(g_userSetting.histMessages) - len(g_userSetting.headMessages)
-					if interCnt%2 == 1 {
-						messages = append(messages, g_userSetting.histMessages[len(g_userSetting.headMessages)])
-						messages = append(messages, g_userSetting.histMessages[len(g_userSetting.histMessages)-((g_userSetting.maxConext-1)*2):]...)
-					}
-				}
+			if len(prompts) == 0 {
+				return
 			}
 
-			fmt.Println("the last message Role:", messages[len(messages)-1].Role)
-			is_last_msg_user := (g_userSetting.histMessages[len(g_userSetting.histMessages)-1].Role == "user")
-
-			if !is_last_msg_user {
-				messages = append(messages, gpt.ChatCompletionRequestMessage{
-					Role:    "user",
-					Content: clipboardContent,
-				})
-			}
+			txtChan = make(chan string, 1024)
 
 			ctx, cancel = context.WithCancel(context.Background())
-			go queryGPT(ctx, txtChan, messages)
+			go queryGPT(ctx, txtChan, prompts)
 
-			//isCancel := false
 			assistantAns := ""
 			fmt.Print("### Assistant:\n")
 			for {
@@ -137,26 +66,16 @@ func registerHotKeys() {
 				case txt, ok := <-txtChan:
 					if !ok {
 						// txtChan is closed, exit the loop
-						//fmt.Println("complete")
 						fmt.Print("\n")
-						if g_userSetting.maxConext > 0 {
-							if !is_last_msg_user {
-								g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-									Role:    "user",
-									Content: clipboardContent,
-								})
-							}
-
-							g_userSetting.histMessages = append(g_userSetting.histMessages, gpt.ChatCompletionRequestMessage{
-								Role:    "assistant",
-								Content: assistantAns,
-							})
-
-							updateClearContextTitle(int(math.Ceil(float64(len(g_userSetting.histMessages)-len(g_userSetting.headMessages)) / 2)))
-						}
+						new = append(new, gpt.ChatCompletionRequestMessage{
+							Role:    "assistant",
+							Content: assistantAns,
+						})
+						g_userCore.AddNewMessages(new)
 						return
 					}
 					fmt.Print(txt)
+					txt = strings.ReplaceAll(txt, "\r\n", "\n")
 					for i, t := range strings.Split(txt, "\n") {
 						if i > 0 {
 							robotgo.KeyTap("enter")
@@ -183,7 +102,7 @@ func registerHotKeys() {
 			escCnt++
 			fmt.Println("increase escCnt to", escCnt)
 			if escCnt == 2 { //triple 'esc' click for quick clean context
-				clearContext()
+				g_userCore.ClearContext()
 				escCnt = 0
 			}
 		} else {
@@ -201,9 +120,9 @@ func registerHotKeys() {
 }
 
 func main() {
+	godotenv.Load("env.txt")
 	setLang()
 	g_languages.Load()
-	godotenv.Load("env.txt")
 	OSDepCheck()
 	go registerHotKeys()
 	systray.Run(onReady, onExit)

@@ -18,7 +18,7 @@ func queryGPT(ctx context.Context, txtChan chan string, messages []gpt.ChatCompl
 	)
 
 	err := client.ChatCompletionStream(ctx, &gpt.ChatCompletionRequest{
-		Model:    g_userSetting.model,
+		Model:    g_userCore.model,
 		Messages: messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {
 		//fmt.Println(response.Choices)

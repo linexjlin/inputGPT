@@ -39,12 +39,6 @@ func onExit() {
 	fmt.Println("exit", now)
 }
 
-var _mClearContextSetTitle func(string)
-
-func updateClearContextTitle(n int) {
-	_mClearContextSetTitle(fmt.Sprintf(UText("Clear Context %d/%d"), n, g_userSetting.maxConext))
-}
-
 var updateHotKeyTitle func(string)
 
 func monitorFileModification(filepath string) {
@@ -123,13 +117,14 @@ func onReady() {
 	mImport := systray.AddMenuItem(UText("Import"), UText("Import a prompt from clipboard"))
 
 	mClearContext := systray.AddMenuItem(UText("Clear Context"), UText("Clear Context"))
-	_mClearContextSetTitle = mClearContext.SetTitle
+	g_userCore.AddSetContextMenuFunc(mClearContext.SetTitle)
+
 	go func() {
 		for {
 			select {
 			case <-mClearContext.ClickedCh:
 				fmt.Println("Clear Context")
-				clearContext()
+				g_userCore.ClearContext()
 			}
 		}
 	}()
@@ -162,24 +157,14 @@ func onReady() {
 				case <-m.ClickedCh:
 					fmt.Println(idx, filepath, mk)
 					if filepath == "" {
-						g_userSetting.initUserSetting()
+						g_userCore.initUserCore()
 					} else {
-						if p, e := loadPrompt(filepath); e != nil {
+						if p, e := loadModePrompt(filepath); e != nil {
 							fmt.Println(e)
 							continue
 						} else {
-							g_userSetting.initUserSetting() // reset all user settings
-
-							g_userSetting.headMessages = p.HeadMessages
-							if p.Model != "" {
-								g_userSetting.model = p.Model
-							}
-
-							g_userSetting.maxConext = p.MaxContext
-
-							clearContext()
-							updateClearContextTitle(0)
-							g_userSetting.mask = mk
+							g_userCore.SetMask(mk)
+							g_userCore.SetModePrompt(p)
 						}
 					}
 
@@ -207,7 +192,7 @@ func onReady() {
 					fmt.Println("Failed to read clipboard content:", err)
 				} else {
 					fmt.Println(clipboardContent)
-					if p, e := parsePrompt(clipboardContent); e != nil {
+					if p, e := parseModePrompt(clipboardContent); e != nil {
 						fmt.Println(e)
 					} else {
 						if p.Name != "" {
@@ -222,19 +207,8 @@ func onReady() {
 								go func() {
 									for {
 										<-m.ClickedCh
-										g_userSetting.initUserSetting() // reset all user settings
-										g_userSetting.headMessages = p.HeadMessages
-										if p.Model != "" {
-											g_userSetting.model = p.Model
-										}
-
-										if p.MaxContext != 0 {
-											g_userSetting.maxConext = p.MaxContext
-										}
-
-										clearContext()
-										updateClearContextTitle(0)
-										g_userSetting.mask = p.Name
+										g_userCore.SetMask(p.Name)
+										g_userCore.SetModePrompt(p)
 
 										for ii, mm := range maskMenus {
 											if ii == idx {
@@ -247,7 +221,7 @@ func onReady() {
 								}()
 								maskMenus = append(maskMenus, m)
 							}
-							savePrompt(p, promptFilePath)
+							saveModePrompt(p, promptFilePath)
 						}
 					}
 				}
@@ -255,12 +229,5 @@ func onReady() {
 		}
 	}()
 
-	updateClearContextTitle(0)
 	updateHotKeyTitle(fmt.Sprintf(UText("Copy the question then click \"%s\" to query GPT"), strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
-}
-
-func clearContext() {
-	fmt.Println("clean all context")
-	g_userSetting.histMessages = g_userSetting.histMessages[:0]
-	updateClearContextTitle(0)
 }
