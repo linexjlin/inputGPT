@@ -3,3 +3,5 @@ inputGPT
 .env
 env.txt
 test
+pack
+.DS_Store

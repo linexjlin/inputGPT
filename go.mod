@@ -1,6 +1,6 @@
 module github.com/linexjlin/inputGPT
 
-go 1.18
+go 1.21
 
 require (
 	github.com/atotto/clipboard v0.1.4

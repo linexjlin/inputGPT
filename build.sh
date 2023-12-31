@@ -1,2 +1,2 @@
 #!/bin/bash
-go build -ldflags="-s -w"
+go build -o inputGPT -ldflags="-s -w" main.go darwin.go language.go userCore.go config.go utils.go renderMessages.go systray.go hotkey.go gpt.go
