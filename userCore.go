@@ -6,8 +6,6 @@ import (
 	"github.com/hanyuancheung/gpt-go"
 )
 
-var g_userCore UserCore
-
 type UserCore struct {
 	mask           string
 	model          string
