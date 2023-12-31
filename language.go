@@ -20,8 +20,6 @@ type Language struct {
 	Data map[string]map[string]string
 }
 
-var g_languages = Language{Data: make(map[string]map[string]string)}
-
 // give the right lanuage with query text when no match return the langText itself
 func UText(langText string) string {
 	translated := langText
@@ -47,7 +45,7 @@ func UText(langText string) string {
 	return translated
 }
 
-func setLang() {
+func (l *Language) SetLang() {
 	if lang := os.Getenv("MYLANG"); lang != "" {
 		fmt.Println("using user lang:", lang)
 		MYLANG = lang

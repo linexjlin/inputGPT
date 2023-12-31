@@ -6,10 +6,11 @@ import (
 )
 
 var g_userCore UserCore
+var g_languages = Language{Data: make(map[string]map[string]string)}
 
 func main() {
 	godotenv.Load("env.txt")
-	setLang()
+	g_languages.SetLang()
 	g_languages.Load()
 	OSDepCheck()
 	go registerHotKeys(&g_userCore)
