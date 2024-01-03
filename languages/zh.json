@@ -59,6 +59,9 @@
     "Bi-Translator": {
         "zh": "双向互译"
     },
+    "Expert Educator": {
+        "zh": "专家导师"
+    },
     "Set the OpenAI KEY, baseurl etc..": {
         "zh": "请设置OpenAI KEY，baseurl等参数。"
     }
