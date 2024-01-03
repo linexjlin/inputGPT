@@ -94,8 +94,6 @@ func registerHotKeys(userCore *UserCore) {
 	escCnt := 0
 	lastEscHit := time.Now()
 	hook.Register(hook.KeyDown, []string{"esc"}, func(e hook.Event) {
-		fmt.Println("esc")
-
 		if time.Now().Sub(lastEscHit).Milliseconds() < 500 {
 			escCnt++
 			fmt.Println("increase escCnt to", escCnt)
@@ -107,7 +105,6 @@ func registerHotKeys(userCore *UserCore) {
 			escCnt = 0
 		}
 		lastEscHit = time.Now()
-		fmt.Println("esc")
 		go func() {
 			cancel()
 		}()

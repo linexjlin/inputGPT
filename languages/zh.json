@@ -62,6 +62,12 @@
     "Expert Educator": {
         "zh": "专家导师"
     },
+    "ChatGPT": {
+        "zh": "ChatGPT"
+    },
+    "Cloze": {
+        "zh": "完形填空"
+    },
     "Set the OpenAI KEY, baseurl etc..": {
         "zh": "请设置OpenAI KEY，baseurl等参数。"
     }

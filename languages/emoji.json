@@ -59,6 +59,15 @@
     "Bi-Translator": {
         "emoji": "🔄"
     },
+    "ChatGPT": {
+        "emoji": "💬"
+    },
+    "Expert Educator": {
+        "emoji": "🧠💡"
+    },
+    "Cloze": {
+        "emoji": "🧩🔍"
+    },
     "Set the OpenAI KEY, baseurl etc..": {
         "emoji": "🔧"
     }
