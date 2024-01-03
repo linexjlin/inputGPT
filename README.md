@@ -3,7 +3,7 @@ A program let you query GPT from any input area.
 
 ## What the app can do?
 * Call LLM without disconnecting from the workspace.
-* Call LLM in the fastest way possible.
+* The fastest way to get answer from GPT.
 
 ## Features
 *  Cross-platform [win,mac]
@@ -11,21 +11,29 @@ A program let you query GPT from any input area.
 *  Customize prompts
 
 # Usage
+
 ## Quick start
 1. Open InputGPT click "Set API KEY" to provide OpenAI Key. 
-1. Copy the text to clipboard
-1. Click `shift + space` to query GPT
-1. Press `ESC` key to stop generate
+1. Select the text for query, copy the text to clipboard
+1. Click HotKey `shift + space` to query GPT
+1. One click `ESC` key to stop generate
 1. Triple click `ESC` key to quick clear context
 
 ## User define HotKey 
-Click "Set API KEY" InputGPT will open `env.txt` file 
+
+Click "Set API KEY" InputGPT will open `env.txt` file
+
 Add a new line to the file like this `GPT_HOTKEYS=space+shift` then save and close the file.
+
 the keycode [reference](https://github.com/vcaesar/keycode/blob/main/keycode.go):
-![](https://ipfs.ee/ipfs/QmaBtanJEmt8krtLLAL2zE9QYyNodQ7bvkRofNuWABaZmn/d6636a7b-cb75-494f-84ac-3935382544d8.png)
+
+![](https://ipfs.ee/ipfs/QmTusxyAgEg8cFWU7dvtPcU5R7tY3mxpZMd36dBkixTQhT/3b12e13c-19cf-4392-867b-74b35e030e9c.png)
 
 ## Import Prompt
+
 Just Copy the json like below copy one of them:
+
+Act as ChatGPT
 ```json
 {
   "name": "ChatGPT",
@@ -39,6 +47,8 @@ Just Copy the json like below copy one of them:
   "maxContext": 20
 }
 ```
+
+Translate
 
 ```json
 {
@@ -59,9 +69,9 @@ Just Copy the json like below copy one of them:
 ```
 then click then import menu of the app．
 
-![](https://ipfs.ee/ipfs/QmPW2FcmLvfZLbT5Ak6FYWRSc9FWJ5p3waQ4PrCPEzeH5R/6d498736-0911-460a-8fe2-8e91c8ca3340.png)
+![](https://ipfs.ee/ipfs/QmWKuLddH695Qmbpr7ndaDW3FsJu8ipdmYn6h6iieyjTv2/a24ed277-e55c-4ceb-a339-0ef0fb2b1827.png)
 
-[For more templates](https://inputgpt.vercel.app/)
+[For more templates](https://inputgpt.vercel.app/examples)
 
 # DEMO
 
