@@ -69,7 +69,7 @@ Translate
 ```
 then click then import menu of the app．
 
-![](https://ipfs.ee/ipfs/QmWKuLddH695Qmbpr7ndaDW3FsJu8ipdmYn6h6iieyjTv2/a24ed277-e55c-4ceb-a339-0ef0fb2b1827.png)
+![](https://ipfs.ee/ipfs/QmTGUWr8TzEurjv3MiUuhuzuex5Pb4Lb2SRiBsxmqGErnx/08a6b1b8-6436-4556-b5a8-87b305f577b7.png)
 
 [For more templates](https://inputgpt.vercel.app/examples)
 

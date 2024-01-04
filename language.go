@@ -27,6 +27,37 @@ func NewLanguage() *Language {
 	return &l
 }
 
+func (l *Language) UText(langText string) string {
+	translated := langText
+	if lang, ok := l.Data[langText]; ok {
+		if text, ok := lang[MYLANG]; ok {
+			translated = text
+		}
+	} else {
+		if MYLANG != "en" {
+			fmt.Printf("unmatch:\"%s\" \"%s\"\n", langText, MYLANG)
+		}
+	}
+
+	return translated
+}
+
+func (l *Language) UTextWithLangCode(langText, lcode string) string {
+	translated := langText
+	if lang, ok := l.Data[langText]; ok {
+		if text, ok := lang[lcode]; ok {
+			translated = text
+		}
+	} else {
+		if lcode != "en" {
+			fmt.Printf("unmatch:\"%s\" \"%s\"\n", langText, lcode)
+			return ""
+		}
+	}
+
+	return translated
+}
+
 func (l *Language) SetLang() {
 	if lang := os.Getenv("MYLANG"); lang != "" {
 		fmt.Println("using user lang:", lang)

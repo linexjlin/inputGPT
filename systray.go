@@ -14,7 +14,16 @@ import (
 	"github.com/skratchdot/open-golang/open"
 )
 
-func getMasks() (masks []string) {
+type SysTray struct {
+	userCore          *UserCore
+	updateHotKeyTitle func(string)
+}
+
+func (st *SysTray) Run() {
+	systray.Run(st.onReady, st.onExit)
+}
+
+func (st *SysTray) getMasks() (masks []string) {
 	// Define the directory path and file extension
 	dir := "prompts"
 	ext := ".json"
@@ -34,12 +43,10 @@ func getMasks() (masks []string) {
 	return
 }
 
-func onExit() {
+func (st *SysTray) onExit() {
 	now := time.Now()
 	fmt.Println("exit", now)
 }
-
-var updateHotKeyTitle func(string)
 
 func monitorFileModification(filepath string) {
 	fileInfo, err := os.Stat(filepath)
@@ -73,10 +80,10 @@ func monitorFileModification(filepath string) {
 	fmt.Println("Monitoring completed.")
 }
 
-func onReady() {
+func (st *SysTray) onReady() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 
-	mQuitOrig := systray.AddMenuItem(UText("Exit"), UText("Quit the whole app"))
+	mQuitOrig := systray.AddMenuItem(UMenuText("Exit"), UMenuText("Quit the whole app"))
 	go func() {
 		<-mQuitOrig.ClickedCh
 		fmt.Println("Requesting quit")
@@ -84,7 +91,7 @@ func onReady() {
 		fmt.Println("Finished quitting")
 	}()
 
-	mAbout := systray.AddMenuItem(UText("About"), UText("Open the project page"))
+	mAbout := systray.AddMenuItem(UMenuText("About"), UMenuText("Open the project page"))
 	go func() {
 		for {
 			<-mAbout.ClickedCh
@@ -92,7 +99,7 @@ func onReady() {
 		}
 	}()
 
-	mSetKey := systray.AddMenuItem(UText("Set API KEY"), UText("Set the OpenAI KEY, baseurl etc.."))
+	mSetKey := systray.AddMenuItem(UMenuText("Set API KEY"), UMenuText("Set the OpenAI KEY, baseurl etc.."))
 	go func() {
 		for {
 			<-mSetKey.ClickedCh
@@ -101,12 +108,12 @@ func onReady() {
 		}
 	}()
 
-	mHotKey := systray.AddMenuItem("", UText("Click to active GPT"))
-	updateHotKeyTitle = mHotKey.SetTitle
+	mHotKey := systray.AddMenuItem("", UMenuText("Click to active GPT"))
+	st.updateHotKeyTitle = mHotKey.SetTitle
 
 	systray.AddSeparator()
 
-	mManager := systray.AddMenuItem(UText("Manage Prompts"), UText("Modify, Delete prompts"))
+	mManager := systray.AddMenuItem(UMenuText("Manage Prompts"), UMenuText("Modify, Delete prompts"))
 	go func() {
 		for {
 			<-mManager.ClickedCh
@@ -114,35 +121,35 @@ func onReady() {
 		}
 	}()
 
-	mImport := systray.AddMenuItem(UText("Import"), UText("Import a prompt from clipboard"))
+	mImport := systray.AddMenuItem(UMenuText("Import"), UMenuText("Import a prompt from clipboard"))
 
-	mClearContext := systray.AddMenuItem(UText("Clear Context"), UText("Clear Context"))
-	g_userCore.AddSetContextMenuFunc(mClearContext.SetTitle)
+	mClearContext := systray.AddMenuItem(UMenuText("Clear Context"), UMenuText("Clear Context"))
+	st.userCore.AddSetContextMenuFunc(mClearContext.SetTitle)
 
 	go func() {
 		for {
 			select {
 			case <-mClearContext.ClickedCh:
 				fmt.Println("Clear Context")
-				g_userCore.ClearContext()
+				st.userCore.ClearContext()
 			}
 		}
 	}()
 
 	systray.SetTemplateIcon(icon.Data, icon.Data)
-	//	systray.SetTitle(UText("InputGPT"))
-	systray.SetTooltip(UText("InputGPT a Helpful input Assistant"))
+	//	systray.SetTitle(UMenuText("InputGPT"))
+	systray.SetTooltip(UMenuText("InputGPT a Helpful input Assistant"))
 
 	systray.AddSeparator()
 
 	var maskMenus []*systray.MenuItem
-	masks := getMasks()
+	masks := st.getMasks()
 
-	masks = append(masks, UText("Default"))
+	masks = append(masks, UMenuText("Default"))
 	maskCnt := 0
 
 	for i, msk := range masks {
-		m := systray.AddMenuItemCheckbox(UText(fmt.Sprintf("%s", msk)), UText("Select this prompt"), false)
+		m := systray.AddMenuItemCheckbox(UMenuText(fmt.Sprintf("%s", msk)), UMenuText("Select this prompt"), false)
 		filepath := fmt.Sprintf("prompts/%s.json", msk)
 		mk := msk
 		if i == len(masks)-1 {
@@ -157,14 +164,14 @@ func onReady() {
 				case <-m.ClickedCh:
 					fmt.Println(idx, filepath, mk)
 					if filepath == "" {
-						g_userCore.initUserCore()
+						st.userCore.initUserCore()
 					} else {
 						if p, e := loadModePrompt(filepath); e != nil {
 							fmt.Println(e)
 							continue
 						} else {
-							g_userCore.SetMask(mk)
-							g_userCore.SetModePrompt(p)
+							st.userCore.SetMask(mk)
+							st.userCore.SetModePrompt(p)
 						}
 					}
 
@@ -207,8 +214,8 @@ func onReady() {
 								go func() {
 									for {
 										<-m.ClickedCh
-										g_userCore.SetMask(p.Name)
-										g_userCore.SetModePrompt(p)
+										st.userCore.SetMask(p.Name)
+										st.userCore.SetModePrompt(p)
 
 										for ii, mm := range maskMenus {
 											if ii == idx {
@@ -229,5 +236,5 @@ func onReady() {
 		}
 	}()
 
-	updateHotKeyTitle(fmt.Sprintf(UText("Copy the question then click \"%s\" to query GPT"), strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
+	st.updateHotKeyTitle(fmt.Sprintf(UMenuText("Copy the question then click \"%s\" to query GPT"), strings.ToUpper(strings.Join(getGPTHotkeys(), "+"))))
 }

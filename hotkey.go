@@ -55,7 +55,7 @@ func registerHotKeys(userCore *UserCore) {
 			txtChan = make(chan string, 1024)
 
 			ctx, cancel = context.WithCancel(context.Background())
-			go queryGPT(ctx, txtChan, prompts)
+			go userCore.QueryGPT(ctx, txtChan, prompts)
 
 			assistantAns := ""
 			fmt.Print("### Assistant:\n")

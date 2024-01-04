@@ -1,17 +1,35 @@
 package main
 
 import (
-	"github.com/getlantern/systray"
 	"github.com/joho/godotenv"
 )
 
-var g_userCore UserCore
-var g_languages *Language
+func init() {
+	godotenv.Load("env.txt")
+}
+
+var UText func(string) string
+var UMenuText func(string) string
+
+func initUText(l *Language) {
+	UText = l.UText
+	return
+}
+
+func initUMenuText(l *Language) {
+	UMenuText = func(s string) string {
+		return l.UTextWithLangCode(s, "emoji") + l.UText(s)
+	}
+}
 
 func main() {
-	godotenv.Load("env.txt")
-	g_languages = NewLanguage()
+	var uc UserCore
+	var l *Language
+	l = NewLanguage()
 	OSDepCheck()
-	go registerHotKeys(&g_userCore)
-	systray.Run(onReady, onExit)
+	initUText(l)
+	initUMenuText(l)
+	go registerHotKeys(&uc)
+	st := SysTray{userCore: &uc}
+	st.Run()
 }
