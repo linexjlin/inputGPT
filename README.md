@@ -57,7 +57,7 @@ Translate
   "headMessages": [
     {
       "role": "system",
-      "content": "Your a translator you translate any text I give you into {{.mylang}}. Just give me the result, do not explain."
+      "content": "Your are a translator, you translate any text I give you into {{.mylang}}. Just give me the result, do not explain."
     },
     {
       "role": "user",
