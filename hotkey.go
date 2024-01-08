@@ -12,7 +12,7 @@ import (
 	hook "github.com/robotn/gohook"
 )
 
-func registerHotKeys(userCore *UserCore) {
+func registerHotKeys(userCore *UserCore, st *SysTray) {
 	var txtChan chan string
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -55,6 +55,9 @@ func registerHotKeys(userCore *UserCore) {
 			txtChan = make(chan string, 1024)
 
 			ctx, cancel = context.WithCancel(context.Background())
+			fmt.Println("Generating...")
+			workDone := make(chan struct{}, 2)
+			go st.ShowRunningIcon(ctx, workDone)
 			go userCore.QueryGPT(ctx, txtChan, prompts)
 
 			assistantAns := ""
@@ -70,6 +73,7 @@ func registerHotKeys(userCore *UserCore) {
 							Content: assistantAns,
 						})
 						userCore.AddNewMessages(new)
+						workDone <- struct{}{}
 						return
 					}
 					fmt.Print(txt)

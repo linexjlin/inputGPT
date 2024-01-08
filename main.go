@@ -29,7 +29,7 @@ func main() {
 	OSDepCheck()
 	initUText(l)
 	initUMenuText(l)
-	go registerHotKeys(&uc)
 	st := SysTray{userCore: &uc}
+	go registerHotKeys(&uc, &st)
 	st.Run()
 }

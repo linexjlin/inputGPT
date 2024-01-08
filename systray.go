@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -10,6 +11,7 @@ import (
 	"github.com/atotto/clipboard"
 	"github.com/getlantern/systray"
 	"github.com/joho/godotenv"
+	icons "github.com/linexjlin/systray-icons/dynamic/ball-triangle"
 	icon "github.com/linexjlin/systray-icons/enter-the-keyboard"
 	"github.com/skratchdot/open-golang/open"
 )
@@ -21,6 +23,26 @@ type SysTray struct {
 
 func (st *SysTray) Run() {
 	systray.Run(st.onReady, st.onExit)
+}
+
+func (st *SysTray) ShowRunningIcon(ctx context.Context, done <-chan struct{}) {
+	defer systray.SetIcon(icon.Data)
+	i := 0
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-done:
+			return
+		default:
+			systray.SetIcon(icons.Datas[i])
+			time.Sleep(time.Millisecond * 120)
+			i++
+			if i == len(icons.Datas)-1 {
+				i = 0
+			}
+		}
+	}
 }
 
 func (st *SysTray) getMasks() (masks []string) {

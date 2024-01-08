@@ -9,7 +9,7 @@ require (
 	github.com/hanyuancheung/gpt-go v0.1.0
 	github.com/jeandeaual/go-locale v0.0.0-20220711133428-7de61946b173
 	github.com/joho/godotenv v1.5.1
-	github.com/linexjlin/systray-icons v0.0.0-20230727135833-057b4185c255
+	github.com/linexjlin/systray-icons v0.0.0-20240108042734-47b693219ff8
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/robotn/gohook v0.31.3
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
