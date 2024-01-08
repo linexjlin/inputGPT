@@ -57,7 +57,7 @@ Translate
   "headMessages": [
     {
       "role": "system",
-      "content": "Your a translator you translate any text I give you into {{.mylang}}. Just give me the result, do not explain."
+      "content": "Your are a translator, you translate any text I give you into {{.mylang}}. Just give me the result, do not explain."
     },
     {
       "role": "user",
@@ -75,11 +75,11 @@ then click then import menu of the app．
 
 # DEMO
 
-## ChatGPT
+## [ChatGPT](https://inputgpt.vercel.app/examples#act-as-chatgpt)
 
 ![ChatGPT](https://ipfs.ee/ipfs/QmdQetjhkFgNDGf5HhSgbML1rRcYPWQsexxiPggATZ3qLm/d0d6c03a-b0cc-40f3-952c-cb81ef88f6f6.gif)
 
-## Bidirectional Translation
+## [Bidirectional Translation](https://inputgpt.vercel.app/examples#bi-translator)
 
 ![](https://ipfs.ee/ipfs/QmfJUmAURswjtncxk94KE9RKJUpgH72tcsN9Mq6FkGUiZp/c1fe75b6-eb44-47dd-b138-4056045e57d9.gif)
 
