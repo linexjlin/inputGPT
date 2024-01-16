@@ -53,7 +53,7 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 			}
 
 			txtChan = make(chan string, 1024)
-
+			cancel()
 			ctx, cancel = context.WithCancel(context.Background())
 			fmt.Println("Generating...")
 			workDone := make(chan struct{}, 2)
@@ -109,9 +109,7 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 			escCnt = 0
 		}
 		lastEscHit = time.Now()
-		go func() {
-			cancel()
-		}()
+		cancel()
 	})
 
 	s := hook.Start()
