@@ -161,14 +161,13 @@ func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages [
 				txtChan <- response.Choices[0].Delta.Content
 			}
 			if response.Choices[0].FinishReason == "stop" {
-				close(txtChan)
+				fmt.Println("stop")
 			}
 		}
 	})
 	if err != nil {
 		fmt.Printf("ChatCompletionStream error: %v\n", err)
 		txtChan <- fmt.Sprintf("ChatCompletionStream error: %v\n", err)
-		close(txtChan)
-		return
 	}
+	close(txtChan)
 }
