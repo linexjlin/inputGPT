@@ -44,6 +44,7 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 			userCore.reloadMask()
 
 			fmt.Println("### prompt:", userCore.mask)
+			fmt.Println("### model:", userCore.model)
 			fmt.Println("### user:")
 			fmt.Println(clipboardContent)
 			prompts, new := userCore.GeneratePromptMessages(clipboardContent)

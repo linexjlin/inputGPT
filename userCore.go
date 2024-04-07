@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"time"
 
 	"github.com/hanyuancheung/gpt-go"
@@ -162,10 +163,11 @@ func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages [
 			}
 			if response.Choices[0].FinishReason == "stop" {
 				fmt.Println("stop")
+
 			}
 		}
 	})
-	if err != nil {
+	if err != nil && err != io.EOF {
 		fmt.Printf("ChatCompletionStream error: %v\n", err)
 		txtChan <- fmt.Sprintf("ChatCompletionStream error: %v\n", err)
 	}
