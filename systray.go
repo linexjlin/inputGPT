@@ -113,6 +113,9 @@ func (st *SysTray) onReady() {
 		fmt.Println("Finished quitting")
 	}()
 
+	mHotKey := systray.AddMenuItem("", UMenuText("Click to active GPT"))
+	st.updateHotKeyTitle = mHotKey.SetTitle
+
 	mAbout := systray.AddMenuItem(UMenuText("About"), UMenuText("Open the project page"))
 	go func() {
 		for {
@@ -121,7 +124,11 @@ func (st *SysTray) onReady() {
 		}
 	}()
 
-	mSetKey := systray.AddMenuItem(UMenuText("Set API KEY"), UMenuText("Set the OpenAI KEY, baseurl etc.."))
+	systray.AddSeparator()
+
+	mSetting := systray.AddMenuItem(UMenuText("Setting"), UMenuText(""))
+
+	mSetKey := mSetting.AddSubMenuItem(UMenuText("Set API KEY"), UMenuText("Set the OpenAI KEY, baseurl etc.."))
 	go func() {
 		for {
 			<-mSetKey.ClickedCh
@@ -130,12 +137,7 @@ func (st *SysTray) onReady() {
 		}
 	}()
 
-	mHotKey := systray.AddMenuItem("", UMenuText("Click to active GPT"))
-	st.updateHotKeyTitle = mHotKey.SetTitle
-
-	systray.AddSeparator()
-
-	mManager := systray.AddMenuItem(UMenuText("Manage Prompts"), UMenuText("Modify, Delete prompts"))
+	mManager := mSetting.AddSubMenuItem(UMenuText("Manage Prompts"), UMenuText("Modify, Delete prompts"))
 	go func() {
 		for {
 			<-mManager.ClickedCh
@@ -143,8 +145,36 @@ func (st *SysTray) onReady() {
 		}
 	}()
 
-	mImport := systray.AddMenuItem(UMenuText("Import"), UMenuText("Import a prompt from clipboard"))
+	mImport := mSetting.AddSubMenuItem(UMenuText("Import"), UMenuText("Import a prompt from clipboard"))
 
+	systray.AddSeparator()
+
+	var modesMenus []*systray.MenuItem
+	modes := getModeList()
+	for i, mode := range modes {
+		m := systray.AddMenuItem(UMenuText(mode), UMenuText("Chose "+mode))
+		go func(i int, mode string) {
+			for {
+				<-m.ClickedCh
+				fmt.Println(i, mode)
+				st.userCore.SetDefaultMode(mode)
+
+				for ii, mm := range modesMenus {
+					if ii == i {
+						mm.Check()
+					} else {
+						mm.Uncheck()
+					}
+				}
+			}
+		}(i, mode)
+		if i == 0 {
+			m.Check()
+		}
+		modesMenus = append(modesMenus, m)
+	}
+
+	systray.AddSeparator()
 	mClearContext := systray.AddMenuItem(UMenuText("Clear Context"), UMenuText("Clear Context"))
 	st.userCore.AddSetContextMenuFunc(mClearContext.SetTitle)
 

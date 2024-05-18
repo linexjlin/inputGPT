@@ -51,6 +51,14 @@ func getMaxContext() int {
 	}
 }
 
+func getModeList() []string {
+	modes := strings.Split(os.Getenv("MODES"), ",")
+	if len(modes) == 0 {
+		modes = []string{"gpt-3.5-turbo"}
+	}
+	return modes
+}
+
 type ModePrompt struct {
 	Name         string                             `json:"name"`
 	Model        string                             `json:"model"`

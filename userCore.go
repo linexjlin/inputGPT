@@ -12,6 +12,7 @@ import (
 type UserCore struct {
 	mask           string
 	model          string
+	defaultMode    string
 	maxConext      int
 	msgCnt         int
 	headMessages   []gpt.ChatCompletionRequestMessage
@@ -21,7 +22,7 @@ type UserCore struct {
 
 func (u *UserCore) initUserCore() {
 	u.mask = "Default"
-	u.model = "gpt-3.5-turbo"
+	u.model = u.defaultMode
 	u.maxConext = getMaxContext()
 	u.msgCnt = 0
 	u.histMessages = []gpt.ChatCompletionRequestMessage{}
@@ -140,6 +141,12 @@ func (u *UserCore) ClearContext() {
 	u.histMessages = u.histMessages[:0]
 	u.msgCnt = 0
 	u.updateContextMenu()
+}
+
+func (u *UserCore) SetDefaultMode(mode string) {
+	fmt.Println("Set default mode to", mode)
+	u.defaultMode = mode
+	u.model = mode
 }
 
 func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
