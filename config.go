@@ -52,10 +52,16 @@ func getMaxContext() int {
 }
 
 func getModeList() []string {
-	modes := strings.Split(os.Getenv("MODES"), ",")
+	modesEnv := os.Getenv("MODES")
+	if modesEnv == "" {
+		modesEnv = "gpt-3.5-turbo"
+	}
+
+	modes := strings.Split(modesEnv, ",")
 	if len(modes) == 0 {
 		modes = []string{"gpt-3.5-turbo"}
 	}
+	fmt.Println(len(modes))
 	return modes
 }
 
