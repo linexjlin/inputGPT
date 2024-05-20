@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/atotto/clipboard"
 	"github.com/go-vgo/robotgo"
 	"github.com/hanyuancheung/gpt-go"
 	hook "github.com/robotn/gohook"
+	"golang.design/x/clipboard"
 )
 
 func registerHotKeys(userCore *UserCore, st *SysTray) {
@@ -22,6 +22,11 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 	userCore.initUserCore()
 
 	hook.Register(hook.KeyDown, gptHotkeys, func(e hook.Event) {
+		err := clipboard.Init()
+		if err != nil {
+			panic(err)
+		}
+
 		go func() {
 			fmt.Println(gptHotkeys)
 			if time.Now().Sub(lastHit).Seconds() > 1.0 {
@@ -30,7 +35,9 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 				return
 			}
 
-			clipboardContent, err := clipboard.ReadAll()
+			//clipboardContent, err := clipboard.ReadAll()
+			clipboardContent := string(clipboard.Read(clipboard.FmtText))
+			fmt.Println(clipboardContent)
 			if err != nil {
 				fmt.Println("Failed to read clipboard content:", err)
 				return

@@ -44,7 +44,10 @@ require (
 	github.com/vcaesar/keycode v0.10.1 // indirect
 	github.com/vcaesar/tt v0.20.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
+	golang.design/x/clipboard v0.7.0 // indirect
+	golang.org/x/exp v0.0.0-20190731235908-ec7cb31e5a56 // indirect
 	golang.org/x/image v0.14.0 // indirect
+	golang.org/x/mobile v0.0.0-20230301163155-e0f57694e12c // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 )
