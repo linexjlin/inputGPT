@@ -123,17 +123,14 @@ func (u *UserCore) GeneratePromptMessages(newQuery string) (prompts, new []gpt.C
 
 func (u *UserCore) AddSetContextMenuFunc(f func(string)) {
 	u.setContextMenu = f
+	u.updateContextMenu()
 }
 
 func (u *UserCore) updateContextMenu() {
 	if u.setContextMenu == nil {
 		return
 	}
-	if u.maxConext == 0 {
-		u.setContextMenu(UText("Clear Context"))
-	} else {
-		u.setContextMenu(fmt.Sprintf(UText("Clear Context %d/%d"), u.msgCnt, u.maxConext))
-	}
+	u.setContextMenu(fmt.Sprintf(UText("Clear Context ")+"%s (%d/%d)", u.model, u.msgCnt, u.maxConext))
 }
 
 func (u *UserCore) ClearContext() {
@@ -147,6 +144,7 @@ func (u *UserCore) SetDefaultMode(mode string) {
 	fmt.Println("Set default mode to", mode)
 	u.defaultMode = mode
 	u.model = mode
+	u.updateContextMenu()
 }
 
 func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {

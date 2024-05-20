@@ -170,6 +170,7 @@ func (st *SysTray) onReady() {
 		}(i, mode)
 		if i == 0 {
 			m.Check()
+			st.userCore.SetDefaultMode(mode)
 		}
 		modesMenus = append(modesMenus, m)
 	}
