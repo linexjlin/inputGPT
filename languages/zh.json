@@ -68,6 +68,9 @@
     "Cloze": {
         "zh": "完形填空"
     },
+    "Working...": {
+        "zh": "工作中..."
+    },
     "Set the OpenAI KEY, baseurl etc..": {
         "zh": "请设置OpenAI KEY，baseurl等参数。"
     }

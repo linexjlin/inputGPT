@@ -68,6 +68,8 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 			go st.ShowRunningIcon(ctx, workDone)
 			go userCore.QueryGPT(ctx, txtChan, prompts)
 
+			robotgo.TypeStr(UText("Working..."))
+
 			assistantAns := ""
 			fmt.Print("### Assistant:\n")
 			for {
@@ -84,7 +86,15 @@ func registerHotKeys(userCore *UserCore, st *SysTray) {
 						workDone <- struct{}{}
 						return
 					}
+
+					if assistantAns == "" {
+						for i := 0; i < len([]rune(UText("Working..."))); i++ {
+							robotgo.KeyTap("backspace")
+						}
+					}
+
 					fmt.Print(txt)
+
 					txt = strings.ReplaceAll(txt, "\r\n", "\n")
 					for i, t := range strings.Split(txt, "\n") {
 						if i > 0 {
