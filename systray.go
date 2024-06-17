@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/atotto/clipboard"
 	"github.com/getlantern/systray"
 	"github.com/joho/godotenv"
 	icons "github.com/linexjlin/systray-icons/dynamic/ball-triangle"
 	icon "github.com/linexjlin/systray-icons/enter-the-keyboard"
 	"github.com/skratchdot/open-golang/open"
+	"golang.design/x/clipboard"
 )
 
 type SysTray struct {
@@ -247,44 +247,41 @@ func (st *SysTray) onReady() {
 			select {
 			case <-mImport.ClickedCh:
 				fmt.Println(UText("Import"))
-				clipboardContent, err := clipboard.ReadAll()
-				if err != nil {
-					fmt.Println("Failed to read clipboard content:", err)
+				clipboardContent := string(clipboard.Read(clipboard.FmtText))
+				fmt.Println(clipboardContent)
+				if p, e := parseModePrompt(clipboardContent); e != nil {
+					fmt.Println(e)
 				} else {
-					fmt.Println(clipboardContent)
-					if p, e := parseModePrompt(clipboardContent); e != nil {
-						fmt.Println(e)
-					} else {
-						if p.Name != "" {
-							promptFilePath := fmt.Sprintf("prompts/%s.json", p.Name)
-							if _, err := os.Stat(promptFilePath); err == nil {
-								fmt.Println("File exists.", promptFilePath)
-							} else {
-								fmt.Println("create new", promptFilePath)
-								m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", p.Name), "Check Me", false)
-								maskCnt++
-								idx := maskCnt
-								go func() {
-									for {
-										<-m.ClickedCh
-										st.userCore.SetMask(p.Name)
-										st.userCore.SetModePrompt(p)
+					if p.Name != "" {
+						promptFilePath := fmt.Sprintf("prompts/%s.json", p.Name)
+						if _, err := os.Stat(promptFilePath); err == nil {
+							fmt.Println("File exists.", promptFilePath)
+						} else {
+							fmt.Println("create new", promptFilePath)
+							m := systray.AddMenuItemCheckbox(fmt.Sprintf("%s", p.Name), "Check Me", false)
+							maskCnt++
+							idx := maskCnt
+							go func() {
+								for {
+									<-m.ClickedCh
+									st.userCore.SetMask(p.Name)
+									st.userCore.SetModePrompt(p)
 
-										for ii, mm := range maskMenus {
-											if ii == idx {
-												mm.Check()
-											} else {
-												mm.Uncheck()
-											}
+									for ii, mm := range maskMenus {
+										if ii == idx {
+											mm.Check()
+										} else {
+											mm.Uncheck()
 										}
 									}
-								}()
-								maskMenus = append(maskMenus, m)
-							}
-							saveModePrompt(p, promptFilePath)
+								}
+							}()
+							maskMenus = append(maskMenus, m)
 						}
+						saveModePrompt(p, promptFilePath)
 					}
 				}
+
 			}
 		}
 	}()
