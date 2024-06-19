@@ -48,11 +48,12 @@ func escapeHotkey() {
 		fmt.Printf("hotkey: failed to register hotkey: %v\n", err)
 		return
 	}
-	for {
-		<-hk.Keyup()
-		//fmt.Printf("hotkey: %v is up\n", hk)
-		gCore.escapeHit()
-	}
+
+	<-hk.Keyup()
+	hk.Unregister()
+	escKey()
+	gCore.escapeHit()
+	mainthread.Init(escapeHotkey)
 }
 
 func main() {
