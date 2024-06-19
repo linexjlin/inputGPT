@@ -155,7 +155,6 @@ func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages [
 		gpt.WithBaseURL(getOpenAIBaseUrl()),
 		gpt.WithTimeout(600*time.Second),
 	)
-
 	err := client.ChatCompletionStream(ctx, &gpt.ChatCompletionRequest{
 		Model:    u.model,
 		Messages: messages,
@@ -168,7 +167,6 @@ func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages [
 			}
 			if response.Choices[0].FinishReason == "stop" {
 				fmt.Println("stop")
-
 			}
 		}
 	})

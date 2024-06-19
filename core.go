@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/hanyuancheung/gpt-go"
@@ -90,11 +89,31 @@ func (c *Core) queryHit() {
 			clipboard.Write(clipboard.FmtText, []byte(c.queryString))
 		}()
 
+		tmpText := ""
+		nextType := time.Now()
+		stop := false
 		for {
-			select {
-			case txt, ok := <-c.txtChan:
-				if !ok {
-					// txtChan is closed, exit the loop
+			if t, ok := <-c.txtChan; ok {
+				fmt.Print(t)
+				tmpText = tmpText + t
+			} else {
+				stop = true
+				time.Sleep(time.Since(nextType))
+			}
+
+			if time.Since(nextType).Microseconds() > 0 && tmpText != "" {
+				if assistantAns == "" {
+					for i := 0; i < len([]rune(UText("Working..."))); i++ {
+						TypeBackspace()
+						time.Sleep(time.Millisecond * 10)
+					}
+				}
+				assistantAns = assistantAns + tmpText
+				TypeStr(tmpText)
+				tmpText = ""
+				nextType = time.Now().Add(time.Millisecond * 100) //write interavl 100 milliseconds
+
+				if stop {
 					fmt.Print("\n")
 					new = append(new, gpt.ChatCompletionRequestMessage{
 						Role:    "assistant",
@@ -102,30 +121,8 @@ func (c *Core) queryHit() {
 					})
 					c.u.AddNewMessages(new)
 					workDone <- struct{}{}
-					return
+					break
 				}
-
-				if assistantAns == "" {
-					for i := 0; i < len([]rune(UText("Working..."))); i++ {
-						TypeBackspace()
-					}
-				}
-
-				fmt.Print(txt)
-
-				txt = strings.ReplaceAll(txt, "\r\n", "\n")
-				for i, t := range strings.Split(txt, "\n") {
-					if i > 0 {
-						TypeEnter()
-					}
-					if len(t) > 0 {
-						TypeStr(t)
-					}
-				}
-				assistantAns += txt
-			case <-c.ctx.Done():
-				// ctx is done, exit the loop
-				return
 			}
 		}
 	}()
