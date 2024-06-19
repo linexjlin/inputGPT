@@ -76,7 +76,7 @@ func (c *Core) queryHit() {
 		c.cancel()
 		c.ctx, c.cancel = context.WithCancel(context.Background())
 
-		TypeStr(UText("Working..."))
+		TypeStr("⏳")
 		workDone := make(chan struct{}, 2)
 		go c.st.ShowRunningIcon(c.ctx, workDone)
 		go c.u.QueryGPT(c.ctx, c.txtChan, prompts)
@@ -103,7 +103,7 @@ func (c *Core) queryHit() {
 
 			if time.Since(nextType).Microseconds() > 0 && tmpText != "" {
 				if assistantAns == "" {
-					for i := 0; i < len([]rune(UText("Working..."))); i++ {
+					for i := 0; i < len([]rune("⏳")); i++ {
 						TypeBackspace()
 						time.Sleep(time.Millisecond * 10)
 					}

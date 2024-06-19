@@ -7,6 +7,15 @@ import (
 	"golang.design/x/clipboard"
 )
 
+func escKey() {
+	kb, _ := keybd_event.NewKeyBonding()
+	kb.SetKeys(keybd_event.VK_ESC)
+	if err := kb.Launching(); err != nil {
+		panic(err)
+	}
+	time.Sleep(time.Millisecond * 50)
+}
+
 func paste() {
 	kb, _ := keybd_event.NewKeyBonding()
 	kb.HasSuper(true)
