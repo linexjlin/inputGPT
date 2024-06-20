@@ -15,7 +15,7 @@ A program let you query GPT from any input area.
 ## Quick start
 1. Open InputGPT click "Set API KEY" to provide OpenAI Key. 
 1. Select the text for query, copy the text to clipboard
-1. Click HotKey `shift + space` to query GPT
+1. Click HotKey `space + shift ` to query GPT
 1. One click `ESC` key to stop generate
 1. Triple click `ESC` key to quick clear context
 
@@ -23,9 +23,9 @@ A program let you query GPT from any input area.
 
 Click "Set API KEY" InputGPT will open `env.txt` file
 
-Add a new line to the file like this `GPT_HOTKEYS=space+shift` then save and close the file.
+Add a new line to the file like this `GPT_HOTKEYS=shift+space` then save and close the file.
 
-the keycode [reference](https://github.com/vcaesar/keycode/blob/main/keycode.go):
+the keycode [reference](https://github.com/linexjlin/inputGPT/blob/0f3c44b3afe93745321f38a093d9393e5c6d496a/utils.go#L37):
 
 ![](https://ipfs.ee/ipfs/QmTusxyAgEg8cFWU7dvtPcU5R7tY3mxpZMd36dBkixTQhT/3b12e13c-19cf-4392-867b-74b35e030e9c.png)
 
