@@ -27,7 +27,9 @@ func initUMenuText(l *Language) {
 }
 
 func queryHotkey() {
-	hk := hotkey.New([]hotkey.Modifier{hotkey.ModShift}, hotkey.KeySpace)
+	gptHK := getGPTHotkeys()
+	modKey, key := keyNameToModifier(gptHK[0]), keyNamesToKey(gptHK[1])
+	hk := hotkey.New([]hotkey.Modifier{modKey}, key)
 	err := hk.Register()
 	if err != nil {
 		fmt.Printf("hotkey: failed to register hotkey: %v", err)
