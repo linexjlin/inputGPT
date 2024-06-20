@@ -98,10 +98,12 @@ func (c *Core) queryHit() {
 				tmpText = tmpText + t
 			} else {
 				stop = true
-				time.Sleep(time.Since(nextType))
+				if time.Since(nextType).Microseconds() < 0 {
+					time.Sleep(time.Since(nextType) * -1)
+				}
 			}
 
-			if time.Since(nextType).Microseconds() > 0 && tmpText != "" {
+			if time.Since(nextType).Microseconds() > 0 {
 				if assistantAns == "" {
 					for i := 0; i < len([]rune("⏳")); i++ {
 						TypeBackspace()
@@ -109,9 +111,11 @@ func (c *Core) queryHit() {
 					}
 				}
 				assistantAns = assistantAns + tmpText
-				TypeStr(tmpText)
-				tmpText = ""
-				nextType = time.Now().Add(time.Millisecond * 100) //write interavl 100 milliseconds
+				if tmpText != "" {
+					TypeStr(tmpText)
+					tmpText = ""
+					nextType = time.Now().Add(time.Millisecond * 100) //write interavl 100 milliseconds
+				}
 
 				if stop {
 					fmt.Print("\n")

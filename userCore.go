@@ -170,6 +170,7 @@ func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages [
 			}
 		}
 	})
+
 	if err != nil && err != io.EOF {
 		fmt.Printf("ChatCompletionStream error: %v\n", err)
 		txtChan <- fmt.Sprintf("ChatCompletionStream error: %v\n", err)
