@@ -152,7 +152,7 @@ func (st *SysTray) onReady() {
 	var modesMenus []*systray.MenuItem
 	modes := getModeList()
 	for i, mode := range modes {
-		m := systray.AddMenuItem(UMenuText(mode), UMenuText("Chose "+mode))
+		m := systray.AddMenuItem(UText(mode), UText("Chose "+mode))
 		go func(i int, mode string) {
 			for {
 				<-m.ClickedCh
@@ -202,7 +202,7 @@ func (st *SysTray) onReady() {
 	maskCnt := 0
 
 	for i, msk := range masks {
-		m := systray.AddMenuItemCheckbox(UMenuText(fmt.Sprintf("%s", msk)), UMenuText("Select this prompt"), false)
+		m := systray.AddMenuItemCheckbox(UText(fmt.Sprintf("%s", msk)), UText("Select this prompt"), false)
 		filepath := fmt.Sprintf("prompts/%s.json", msk)
 		mk := msk
 		if i == len(masks)-1 {
