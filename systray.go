@@ -150,27 +150,32 @@ func (st *SysTray) onReady() {
 	systray.AddSeparator()
 
 	var modesMenus []*systray.MenuItem
-	modes := getModeList()
-	for i, mode := range modes {
-		m := systray.AddMenuItem(UText(mode), UText("Chose "+mode))
-		go func(i int, mode string) {
+	models := getModeList()
+	for i, model := range models {
+		m := systray.AddMenuItem(UText(model), UText("Chose "+model))
+		go func(i int, model string) {
 			for {
 				<-m.ClickedCh
-				fmt.Println(i, mode)
-				st.userCore.SetDefaultMode(mode)
-
+				fmt.Println(i, model)
+				selected_models := []string{}
 				for ii, mm := range modesMenus {
 					if ii == i {
-						mm.Check()
-					} else {
-						mm.Uncheck()
+						if mm.Checked() {
+							mm.Uncheck()
+						} else {
+							mm.Check()
+						}
+					}
+					if mm.Checked() {
+						selected_models = append(selected_models, models[ii])
 					}
 				}
+				st.userCore.SetModels(selected_models)
 			}
-		}(i, mode)
+		}(i, model)
 		if i == 0 {
 			m.Check()
-			st.userCore.SetDefaultMode(mode)
+			st.userCore.SetDefaultModel(model)
 		}
 		modesMenus = append(modesMenus, m)
 	}
@@ -219,12 +224,13 @@ func (st *SysTray) onReady() {
 					if filepath == "" {
 						st.userCore.initUserCore()
 					} else {
-						if p, e := loadModePrompt(filepath); e != nil {
+						if p, e := loadModelPrompt(filepath); e != nil {
 							fmt.Println(e)
 							continue
 						} else {
+							st.userCore.initUserCore()
 							st.userCore.SetMask(mk)
-							st.userCore.SetModePrompt(p)
+							st.userCore.SetModelPrompt(p)
 						}
 					}
 
@@ -249,7 +255,7 @@ func (st *SysTray) onReady() {
 				fmt.Println(UText("Import"))
 				clipboardContent := string(clipboard.Read(clipboard.FmtText))
 				fmt.Println(clipboardContent)
-				if p, e := parseModePrompt(clipboardContent); e != nil {
+				if p, e := parseModelPrompt(clipboardContent); e != nil {
 					fmt.Println(e)
 				} else {
 					if p.Name != "" {
@@ -264,8 +270,9 @@ func (st *SysTray) onReady() {
 							go func() {
 								for {
 									<-m.ClickedCh
+									st.userCore.initUserCore()
 									st.userCore.SetMask(p.Name)
-									st.userCore.SetModePrompt(p)
+									st.userCore.SetModelPrompt(p)
 
 									for ii, mm := range maskMenus {
 										if ii == idx {
@@ -278,7 +285,7 @@ func (st *SysTray) onReady() {
 							}()
 							maskMenus = append(maskMenus, m)
 						}
-						saveModePrompt(p, promptFilePath)
+						saveModelPrompt(p, promptFilePath)
 					}
 				}
 

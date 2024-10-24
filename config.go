@@ -65,15 +65,15 @@ func getModeList() []string {
 	return modes
 }
 
-type ModePrompt struct {
+type ModelPrompt struct {
 	Name         string                             `json:"name"`
 	Model        string                             `json:"model"`
 	HeadMessages []gpt.ChatCompletionRequestMessage `json:"headMessages"`
 	MaxContext   int                                `json:"maxContext"`
 }
 
-func loadModePrompt(filepath string) (ModePrompt, error) {
-	var prompt ModePrompt
+func loadModelPrompt(filepath string) (ModelPrompt, error) {
+	var prompt ModelPrompt
 
 	// Read the file contents
 	data, err := os.ReadFile(filepath)
@@ -90,8 +90,8 @@ func loadModePrompt(filepath string) (ModePrompt, error) {
 	return prompt, nil
 }
 
-func parseModePrompt(content string) (ModePrompt, error) {
-	var prompt ModePrompt
+func parseModelPrompt(content string) (ModelPrompt, error) {
+	var prompt ModelPrompt
 
 	// Unmarshal the JSON data into the ModePrompt struct
 	err := json.Unmarshal([]byte(content), &prompt)
@@ -102,7 +102,7 @@ func parseModePrompt(content string) (ModePrompt, error) {
 	return prompt, nil
 }
 
-func saveModePrompt(prompt ModePrompt, filepath string) error {
+func saveModelPrompt(prompt ModelPrompt, filepath string) error {
 	// Marshal the ModePrompt struct into JSON data
 	data, err := json.Marshal(prompt)
 	if err != nil {

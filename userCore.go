@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 	"time"
 
 	"github.com/hanyuancheung/gpt-go"
@@ -11,8 +12,9 @@ import (
 
 type UserCore struct {
 	mask           string
-	model          string
-	defaultMode    string
+	maskModel      string
+	models         []string
+	defaultModel   string
 	maxConext      int
 	msgCnt         int
 	headMessages   []gpt.ChatCompletionRequestMessage
@@ -22,7 +24,7 @@ type UserCore struct {
 
 func (u *UserCore) initUserCore() {
 	u.mask = "Default"
-	u.model = u.defaultMode
+	u.maskModel = ""
 	u.maxConext = getMaxContext()
 	u.msgCnt = 0
 	u.histMessages = []gpt.ChatCompletionRequestMessage{}
@@ -35,24 +37,28 @@ func (u *UserCore) initUserCore() {
 	u.updateContextMenu()
 }
 
-func (u *UserCore) reloadMask() {
+func (u *UserCore) reloadMask_del() (*ModelPrompt, error) {
+	fmt.Println("mask", u.mask)
 	if u.mask == "Default" {
-		return
+		return nil, nil
 	}
 	filepath := fmt.Sprintf("prompts/%s.json", u.mask)
-	if p, e := loadModePrompt(filepath); e != nil {
+	fmt.Println("filepaht:", filepath)
+	if p, e := loadModelPrompt(filepath); e != nil {
 		fmt.Println(e)
+		return nil, e
 	} else {
-		u.SetModePrompt(p)
+		u.SetModelPrompt(p)
+		return &p, nil
 	}
 }
 
-func (u *UserCore) SetModePrompt(p ModePrompt) {
-	u.initUserCore()
-	u.headMessages = p.HeadMessages
+func (u *UserCore) SetModelPrompt(p ModelPrompt) {
+	fmt.Println("mask", u.mask)
 	if p.Model != "" {
-		u.model = p.Model
+		u.maskModel = p.Model
 	}
+	u.headMessages = p.HeadMessages
 
 	if p.MaxContext != 0 {
 		u.maxConext = p.MaxContext
@@ -130,7 +136,7 @@ func (u *UserCore) updateContextMenu() {
 	if u.setContextMenu == nil {
 		return
 	}
-	u.setContextMenu(fmt.Sprintf(UText("Clear Context ")+"%s (%d/%d)", u.model, u.msgCnt, u.maxConext))
+	u.setContextMenu(fmt.Sprintf(UText("Clear Context ")+"%s (%d/%d)", strings.Join(u.models, ","), u.msgCnt, u.maxConext))
 }
 
 func (u *UserCore) ClearContext() {
@@ -140,14 +146,19 @@ func (u *UserCore) ClearContext() {
 	u.updateContextMenu()
 }
 
-func (u *UserCore) SetDefaultMode(mode string) {
-	fmt.Println("Set default mode to", mode)
-	u.defaultMode = mode
-	u.model = mode
+func (u *UserCore) SetDefaultModel(model string) {
+	fmt.Println("Set default mode to", model)
+	u.defaultModel = model
 	u.updateContextMenu()
 }
 
-func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
+func (u *UserCore) SetModels(models []string) {
+	fmt.Println("Set modes to", models)
+	u.models = models
+	u.updateContextMenu()
+}
+
+func (u *UserCore) QueryGPT(ctx context.Context, model string, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
 	fmt.Println("Query messages:")
 	showAsJson(messages)
 	client := gpt.NewClient(
@@ -156,7 +167,7 @@ func (u *UserCore) QueryGPT(ctx context.Context, txtChan chan string, messages [
 		gpt.WithTimeout(600*time.Second),
 	)
 	err := client.ChatCompletionStream(ctx, &gpt.ChatCompletionRequest{
-		Model:    u.model,
+		Model:    model,
 		Messages: messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {
 		//fmt.Println(response.Choices)
