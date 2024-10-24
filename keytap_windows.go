@@ -14,7 +14,7 @@ func escKey() {
 	if err := kb.Launching(); err != nil {
 		panic(err)
 	}
-	time.Sleep(time.Millisecond * 50)
+	time.Sleep(time.Millisecond * 10)
 }
 
 func paste() {

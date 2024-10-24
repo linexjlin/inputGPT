@@ -97,10 +97,10 @@ func (c *Core) queryHit() {
 				fmt.Print(t)
 				tmpText = tmpText + t
 			} else {
-				stop = true
 				if time.Since(nextType).Microseconds() < 0 {
 					time.Sleep(time.Since(nextType) * -1)
 				}
+				stop = true
 			}
 
 			if time.Since(nextType).Microseconds() > 0 {
@@ -118,6 +118,10 @@ func (c *Core) queryHit() {
 				}
 
 				if stop {
+					if time.Since(nextType).Microseconds() < 0 {
+						time.Sleep(time.Since(nextType) * -1)
+					}
+
 					fmt.Print("\n")
 					new = append(new, gpt.ChatCompletionRequestMessage{
 						Role:    "assistant",
