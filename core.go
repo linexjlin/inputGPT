@@ -64,6 +64,7 @@ func (c *Core) queryHit() {
 		} else if len(c.u.models) > 1 {
 			fmt.Println("using muti models", c.u.models)
 			for i, model := range c.u.models {
+				//check c.ctx status before loop
 				fmt.Println("calling", model)
 				TypeStr(fmt.Sprintf("<%s>\n", model))
 				c.queryWithMode(model)
@@ -71,6 +72,14 @@ func (c *Core) queryHit() {
 					TypeStr(fmt.Sprintf("\n</%s>", model))
 				} else {
 					TypeStr(fmt.Sprintf("\n</%s>\n\n", model))
+				}
+
+				select {
+				case <-c.ctx.Done():
+					fmt.Println("Context canceled or deadline exceeded during iteration")
+					return
+				default:
+					// Continue with the current iteration
 				}
 			}
 		} else if len(c.u.models) > 0 {
@@ -83,6 +92,10 @@ func (c *Core) queryHit() {
 		clipboard.Write(clipboard.FmtText, []byte(c.queryString))
 	}()
 }
+
+const (
+	ThinkingStr = "⏳"
+)
 
 func (c *Core) queryWithMode(model string) {
 	fmt.Println("### model:", model)
@@ -97,7 +110,7 @@ func (c *Core) queryWithMode(model string) {
 	c.cancel()
 	c.ctx, c.cancel = context.WithCancel(context.Background())
 
-	TypeStr("⏳")
+	TypeStr(ThinkingStr)
 	workDone := make(chan struct{}, 2)
 	go c.st.ShowRunningIcon(c.ctx, workDone)
 	go c.u.QueryGPT(c.ctx, model, c.txtChan, prompts)
@@ -118,15 +131,13 @@ func (c *Core) queryWithMode(model string) {
 			fmt.Print(t)
 			tmpText = tmpText + t
 		} else {
-			if time.Since(nextType).Microseconds() < 0 {
-				time.Sleep(time.Since(nextType) * -1)
-			}
+			time.Sleep(time.Until(nextType))
 			stop = true
 		}
 
-		if time.Since(nextType).Microseconds() > 0 {
+		if time.Now().After(nextType) {
 			if assistantAns == "" {
-				for i := 0; i < len([]rune("⏳")); i++ {
+				for i := 0; i < len([]rune(ThinkingStr)); i++ {
 					TypeBackspace()
 					time.Sleep(time.Millisecond * 10)
 				}
@@ -135,7 +146,7 @@ func (c *Core) queryWithMode(model string) {
 			if tmpText != "" {
 				TypeStr(tmpText)
 				tmpText = ""
-				nextType = time.Now().Add(time.Millisecond * 250) //write interavl 100 milliseconds
+				nextType = time.Now().Add(time.Millisecond * 200) //write interavl 100 milliseconds
 			}
 
 			if stop {

@@ -46,7 +46,7 @@ func enter() {
 }
 
 func TypeStr(s string) {
-	time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * 150)
 	clipboard.Write(clipboard.FmtText, []byte(s))
 	paste()
 }
