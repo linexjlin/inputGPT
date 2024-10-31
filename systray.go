@@ -159,15 +159,23 @@ func (st *SysTray) onReady() {
 				fmt.Println(i, model)
 				selected_models := []string{}
 				for ii, mm := range modesMenus {
-					if ii == i {
-						if mm.Checked() {
-							mm.Uncheck()
-						} else {
-							mm.Check()
+					if st.userCore.mutiModel {
+						if ii == i {
+							if mm.Checked() {
+								mm.Uncheck()
+							} else {
+								mm.Check()
+							}
 						}
-					}
-					if mm.Checked() {
-						selected_models = append(selected_models, models[ii])
+						if mm.Checked() {
+							selected_models = append(selected_models, models[ii])
+						}
+					} else {
+						if ii == i {
+							mm.Check()
+						} else {
+							mm.Uncheck()
+						}
 					}
 				}
 				st.userCore.SetModels(selected_models)

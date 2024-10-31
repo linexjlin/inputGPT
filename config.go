@@ -40,6 +40,31 @@ func getOpenAIBaseUrl() string {
 	return "https://api.openai.com/v1"
 }
 
+func getMutiModel() bool {
+	return os.Getenv("MUTI_MODEL") != ""
+}
+
+func getTemperature() float32 {
+	// 从环境变量中读取温度值
+	v := os.Getenv("TEMPERATURE")
+
+	// 如果环境变量不存在，返回默认值 20.0
+	if v == "" {
+		return 1.0
+	}
+
+	// 尝试将字符串转换为 float32
+	temperature, err := strconv.ParseFloat(v, 32)
+	if err != nil {
+		// 如果转换失败，打印错误并返回默认值 20.0
+		fmt.Println("Error parsing temperature:", err)
+		return 1.0
+	}
+
+	// 返回转换后的温度值
+	return float32(temperature)
+}
+
 func getMaxContext() int {
 	maxContext := os.Getenv("MAX_CONTEXT")
 	maxContextInt, err := strconv.Atoi(maxContext)
@@ -68,6 +93,7 @@ func getModeList() []string {
 type ModelPrompt struct {
 	Name         string                             `json:"name"`
 	Model        string                             `json:"model"`
+	Temperature  float32                            `json:"temperature"`
 	HeadMessages []gpt.ChatCompletionRequestMessage `json:"headMessages"`
 	MaxContext   int                                `json:"maxContext"`
 }

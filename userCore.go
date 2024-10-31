@@ -11,21 +11,26 @@ import (
 )
 
 type UserCore struct {
-	mask           string
-	maskModel      string
-	models         []string
-	defaultModel   string
-	maxConext      int
-	msgCnt         int
-	headMessages   []gpt.ChatCompletionRequestMessage
-	histMessages   []gpt.ChatCompletionRequestMessage
-	setContextMenu func(string)
+	mask            string
+	maskModel       string
+	models          []string
+	mutiModel       bool
+	temperature     float32
+	maskTemperature float32
+	defaultModel    string
+	maxConext       int
+	msgCnt          int
+	headMessages    []gpt.ChatCompletionRequestMessage
+	histMessages    []gpt.ChatCompletionRequestMessage
+	setContextMenu  func(string)
 }
 
 func (u *UserCore) initUserCore() {
 	u.mask = "Default"
 	u.maskModel = ""
+	u.mutiModel = getMutiModel()
 	u.maxConext = getMaxContext()
+	u.temperature = getTemperature()
 	u.msgCnt = 0
 	u.histMessages = []gpt.ChatCompletionRequestMessage{}
 	u.headMessages = []gpt.ChatCompletionRequestMessage{
@@ -43,7 +48,7 @@ func (u *UserCore) reloadMask_del() (*ModelPrompt, error) {
 		return nil, nil
 	}
 	filepath := fmt.Sprintf("prompts/%s.json", u.mask)
-	fmt.Println("filepaht:", filepath)
+	fmt.Println("file path:", filepath)
 	if p, e := loadModelPrompt(filepath); e != nil {
 		fmt.Println(e)
 		return nil, e
@@ -58,6 +63,7 @@ func (u *UserCore) SetModelPrompt(p ModelPrompt) {
 	if p.Model != "" {
 		u.maskModel = p.Model
 	}
+	u.maskTemperature = p.Temperature
 	u.headMessages = p.HeadMessages
 
 	if p.MaxContext != 0 {
@@ -158,7 +164,7 @@ func (u *UserCore) SetModels(models []string) {
 	u.updateContextMenu()
 }
 
-func (u *UserCore) QueryGPT(ctx context.Context, model string, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
+func (u *UserCore) QueryGPT(ctx context.Context, model string, temperature float32, txtChan chan string, messages []gpt.ChatCompletionRequestMessage) {
 	fmt.Println("Query messages:")
 	showAsJson(messages)
 	client := gpt.NewClient(
@@ -167,8 +173,9 @@ func (u *UserCore) QueryGPT(ctx context.Context, model string, txtChan chan stri
 		gpt.WithTimeout(600*time.Second),
 	)
 	err := client.ChatCompletionStream(ctx, &gpt.ChatCompletionRequest{
-		Model:    model,
-		Messages: messages,
+		Model:       model,
+		Temperature: temperature,
+		Messages:    messages,
 	}, func(response *gpt.ChatCompletionStreamResponse) {
 		//fmt.Println(response.Choices)
 		//fmt.Printf("%+v\n", response)

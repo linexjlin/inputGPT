@@ -59,6 +59,12 @@ func (c *Core) queryHit() {
 
 	go func() {
 		fmt.Println("models:", c.u.models)
+		fmt.Println("temperature:", c.u.temperature)
+		fmt.Println("mask temperature:", c.u.maskTemperature)
+		temperature := c.u.temperature
+		if c.u.maskTemperature > 0 {
+			temperature = c.u.maskTemperature
+		}
 		if c.u.maskModel != "" {
 			fmt.Println("using maskModel", c.u.maskModel)
 		} else if len(c.u.models) > 1 {
@@ -67,8 +73,8 @@ func (c *Core) queryHit() {
 				//check c.ctx status before loop
 				fmt.Println("calling", model)
 				TypeStr(fmt.Sprintf("【%s】： ", model))
-				c.queryWithMode(model)
-				TypeStr(fmt.Sprintf("\n\n"))
+				c.queryWithMode(model, temperature)
+				TypeStr("\n\n")
 				// if i == len(c.u.models) {
 				// 	TypeStr(fmt.Sprintf("\n</%s>", model))
 				// } else {
@@ -85,10 +91,10 @@ func (c *Core) queryHit() {
 			}
 		} else if len(c.u.models) > 0 {
 			fmt.Println("using one models", c.u.models)
-			c.queryWithMode(c.u.models[0])
+			c.queryWithMode(c.u.models[0], temperature)
 		} else {
 			fmt.Println("using defaultMode:", c.u.defaultModel)
-			c.queryWithMode(c.u.defaultModel)
+			c.queryWithMode(c.u.defaultModel, temperature)
 		}
 		clipboard.Write(clipboard.FmtText, []byte(c.queryString))
 	}()
@@ -98,7 +104,7 @@ const (
 	ThinkingStr = "⏳"
 )
 
-func (c *Core) queryWithMode(model string) {
+func (c *Core) queryWithMode(model string, temperature float32) {
 	fmt.Println("### model:", model)
 	prompts, new := c.u.GeneratePromptMessages(c.queryString)
 
@@ -114,7 +120,7 @@ func (c *Core) queryWithMode(model string) {
 	TypeStr(ThinkingStr)
 	workDone := make(chan struct{}, 2)
 	go c.st.ShowRunningIcon(c.ctx, workDone)
-	go c.u.QueryGPT(c.ctx, model, c.txtChan, prompts)
+	go c.u.QueryGPT(c.ctx, model, temperature, c.txtChan, prompts)
 
 	assistantAns := ""
 	fmt.Print("### Assistant:\n")
