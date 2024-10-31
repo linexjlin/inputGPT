@@ -63,16 +63,17 @@ func (c *Core) queryHit() {
 			fmt.Println("using maskModel", c.u.maskModel)
 		} else if len(c.u.models) > 1 {
 			fmt.Println("using muti models", c.u.models)
-			for i, model := range c.u.models {
+			for _, model := range c.u.models {
 				//check c.ctx status before loop
 				fmt.Println("calling", model)
-				TypeStr(fmt.Sprintf("<%s>\n", model))
+				TypeStr(fmt.Sprintf("【%s】： ", model))
 				c.queryWithMode(model)
-				if i == len(c.u.models) {
-					TypeStr(fmt.Sprintf("\n</%s>", model))
-				} else {
-					TypeStr(fmt.Sprintf("\n</%s>\n\n", model))
-				}
+				TypeStr(fmt.Sprintf("\n\n"))
+				// if i == len(c.u.models) {
+				// 	TypeStr(fmt.Sprintf("\n</%s>", model))
+				// } else {
+				// 	TypeStr(fmt.Sprintf("\n</%s>\n\n", model))
+				// }
 
 				select {
 				case <-c.ctx.Done():
