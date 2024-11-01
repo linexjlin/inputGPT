@@ -8,7 +8,7 @@ A program let you query GPT from any input area.
 ## Features
 *  Cross-platform [win,mac]
 *  Multilingual  [en,zh,jp,es,az,fr]
-*  Customize prompts
+*  Customize prompts, temperature
 
 # Usage
 
@@ -27,7 +27,7 @@ Add a new line to the file like this `GPT_HOTKEYS=shift+space` then save and clo
 
 the keycode [reference](https://github.com/linexjlin/inputGPT/blob/0f3c44b3afe93745321f38a093d9393e5c6d496a/utils.go#L37):
 
-![](https://ipfs.ee/ipfs/QmTusxyAgEg8cFWU7dvtPcU5R7tY3mxpZMd36dBkixTQhT/3b12e13c-19cf-4392-867b-74b35e030e9c.png)
+![](https://ipfs.ee/ipfs/QmenMRoLGro1DVQE5pF74toqrZzGsjsUjAksgpTSNsKZeP/8dhMn.png)
 
 ## Import Prompt
 
@@ -37,7 +37,7 @@ Act as ChatGPT
 ```json
 {
   "name": "ChatGPT",
-  "model": "gpt-3.5-turbo",
+  "model": "gpt-4o",
   "headMessages": [
     {
       "role": "system",
@@ -53,7 +53,7 @@ Translate
 ```json
 {
   "name": "Translate",
-  "model": "gpt-3.5-turbo",
+  "model": "gpt-4o",
   "headMessages": [
     {
       "role": "system",
@@ -75,16 +75,18 @@ then click then import menu of the app．
 
 # DEMO
 
-## [ChatGPT](https://inputgpt.vercel.app/examples#act-as-chatgpt)
+## Muti model
 
-![ChatGPT](https://ipfs.ee/ipfs/QmdQetjhkFgNDGf5HhSgbML1rRcYPWQsexxiPggATZ3qLm/d0d6c03a-b0cc-40f3-952c-cb81ef88f6f6.gif)
+![](https://ipfs.ee/ipfs/QmeMPt6jMC3UeZdeAKihCBhK3yrWcuS2r7sLxbEKurkoT6/IiuLp.gif)
+
+## [Chat](https://inputgpt.vercel.app/examples#act-as-chatgpt)
+
+![Chat](https://ipfs.ee/ipfs/QmdQetjhkFgNDGf5HhSgbML1rRcYPWQsexxiPggATZ3qLm/d0d6c03a-b0cc-40f3-952c-cb81ef88f6f6.gif)
 
 ## [Bidirectional Translation](https://inputgpt.vercel.app/examples#bi-translator)
 
 ![](https://ipfs.ee/ipfs/QmfJUmAURswjtncxk94KE9RKJUpgH72tcsN9Mq6FkGUiZp/c1fe75b6-eb44-47dd-b138-4056045e57d9.gif)
 
-Work like github copilot complete the codes in the middle of code file.
-[code cloze](https://ipfs.ee/ipfs/QmRp351kZ9fB1y1k9vWCHJq3egG8wZT39LYeVr9RhzbkVU/a159ab5f-e308-4d02-8d64-9c02ea0fc48e.mp4)
 
 # Build 
 ```cmd
