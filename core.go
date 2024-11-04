@@ -67,6 +67,7 @@ func (c *Core) queryHit() {
 		}
 		if c.u.maskModel != "" {
 			fmt.Println("using maskModel", c.u.maskModel)
+			c.queryWithMode(c.u.maskModel, temperature)
 		} else if len(c.u.models) > 1 {
 			fmt.Println("using muti models", c.u.models)
 			for _, model := range c.u.models {
