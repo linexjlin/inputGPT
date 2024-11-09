@@ -40,6 +40,7 @@ func (c *Core) queryHit() {
 	}
 
 	c.queryString = string(clipboard.Read(clipboard.FmtText))
+	defer clipboard.Write(clipboard.FmtText, []byte(c.queryString))
 	fmt.Println(c.queryString)
 
 	if time.Since(c.lastHit).Milliseconds() > 1000 {
@@ -97,7 +98,6 @@ func (c *Core) queryHit() {
 			fmt.Println("using defaultMode:", c.u.defaultModel)
 			c.queryWithMode(c.u.defaultModel, temperature)
 		}
-		clipboard.Write(clipboard.FmtText, []byte(c.queryString))
 	}()
 }
 
